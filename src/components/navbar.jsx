@@ -2,9 +2,9 @@ import "./navbar.css";
 import { Draw, Edit, Home, Setting } from "./svg.jsx";
 import React, { useState } from "react";
 
-const Navbar = () => {
+const Navbar = ({ active, setActive }) => {
   const [color, setColor] = useState({
-    home: { backgroundColor: "#3B3939", color: "white" },
+    home: { backgroundColor: "white", color: "#3B3939" },
     edit: { backgroundColor: "#3B3939", color: "white" },
     draw: { backgroundColor: "#3B3939", color: "white" },
     setting: { backgroundColor: "#3B3939", color: "white" },
@@ -20,6 +20,7 @@ const Navbar = () => {
               draw: { backgroundColor: "#3B3939", color: "white" },
               setting: { backgroundColor: "#3B3939", color: "white" },
             });
+            setActive("home");
           }}
         >
           <Home
@@ -36,6 +37,7 @@ const Navbar = () => {
               draw: { backgroundColor: "#3B3939", color: "white" },
               setting: { backgroundColor: "#3B3939", color: "white" },
             });
+            setActive("edit");
           }}
         >
           <Edit
@@ -52,6 +54,7 @@ const Navbar = () => {
               draw: { backgroundColor: "white", color: "#3B3939" },
               setting: { backgroundColor: "#3B3939", color: "white" },
             });
+            setActive("draw");
           }}
         >
           <Draw
@@ -69,6 +72,7 @@ const Navbar = () => {
               draw: { backgroundColor: "#3B3939", color: "white" },
               setting: { backgroundColor: "white", color: "#3B3939" },
             });
+            setActive("setting");
           }}
         >
           <Setting

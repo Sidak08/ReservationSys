@@ -122,4 +122,18 @@ function Setting({ backgroundColor, color }) {
   );
 }
 
-export { Draw, Edit, Home, Setting };
+function ActiveDot() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="7"
+      height="7"
+      fill="none"
+      viewBox="0 0 7 7"
+    >
+      <circle cx="3.5" cy="3.5" r="3" fill="#fff" stroke="#1681FF"></circle>
+    </svg>
+  );
+}
+
+export { Draw, Edit, Home, Setting, ActiveDot };
