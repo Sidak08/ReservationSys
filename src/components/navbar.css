@@ -1,0 +1,11 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+#backGroundDiv {
+    width: 80px;
+    height: 100%;
+    background-color: #212121;
+    position: absolute;
+    top: 0;
+}
