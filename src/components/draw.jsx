@@ -39,13 +39,14 @@ const CanvasComponent = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
+    console.log(canvas.width, canvas.height);
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "#0D0D0D";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     context.fillStyle = "#FF0000";
     context.fillRect(500 + offset.x, 500 + offset.y, 70, 70);
-  }, [mousePosition, offset, panning]);
+  }, [mousePosition]);
 
   useEffect(() => {
     const resizeCanvas = () => {
