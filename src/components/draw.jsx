@@ -1,7 +1,8 @@
 import Navbar from "./navbar";
 import React, { useEffect, useRef, useState } from "react";
 import "./draw.css";
-import activeDot from "../assets/activeDit.svg";
+import inActiveDot from "../assets/inActiveDot.svg";
+import activeDot from "../assets/activeDot.svg";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -18,11 +19,14 @@ const CanvasComponent = ({ active, setActive }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [linesArray, setLinesArray] = useState([{ x: 0, y: 0 }]);
+  const [linesArray, setLinesArray] = useState([[{ x: 0, y: 0 }]]);
+  const [lastClick, setLastClick] = useState({ x: 0, y: 0 });
 
   const activeDotImage = new Image();
   activeDotImage.src = activeDot;
-  const [lastClick, setLastClick] = useState({ x: 0, y: 0 });
+
+  const inActiveDotImage = new Image();
+  inActiveDotImage.src = inActiveDot;
 
   const handleMouseMove = (e) => {
     if (panning) {
@@ -44,10 +48,12 @@ const CanvasComponent = ({ active, setActive }) => {
         x: mousePosition.x - offset.x,
         y: mousePosition.y - offset.y,
       });
-      linesArray.push({
+      linesArray[linesArray.length - 1].push({
         x: mousePosition.x - offset.x,
         y: mousePosition.y - offset.y,
       });
+
+      console.log(linesArray[linesArray.length - 1].length);
     }
   };
   const handleMouseUp = () => {
@@ -81,18 +87,47 @@ const CanvasComponent = ({ active, setActive }) => {
       context.stroke();
     }
 
-    for (let i = 0; i < linesArray.length - 1; i++) {
-      context.strokeStyle = "white";
-      context.lineWidth = 1.5;
-      context.beginPath();
-      context.moveTo(linesArray[i].x + offset.x, linesArray[i].y + offset.y);
-      context.lineTo(
-        linesArray[i + 1].x + offset.x,
-        linesArray[i + 1].y + offset.y,
-      );
-      context.stroke();
+    for (let j = 0; j < linesArray.length; j++) {
+      for (let i = 0; i < linesArray[j].length - 1; i++) {
+        context.strokeStyle = "white";
+        context.lineWidth = 1.5;
+        context.beginPath();
+        context.moveTo(
+          linesArray[j][i].x + offset.x,
+          linesArray[j][i].y + offset.y,
+        );
+        context.lineTo(
+          linesArray[j][i + 1].x + offset.x,
+          linesArray[j][i + 1].y + offset.y,
+        );
+        context.stroke();
+
+        context.drawImage(
+          inActiveDotImage,
+          linesArray[j][i].x + offset.x - 7,
+          linesArray[j][i].y + offset.y - 7,
+          14,
+          14,
+        );
+      }
     }
-  }, [mousePosition, active]);
+
+    context.drawImage(
+      inActiveDotImage,
+      linesArray[linesArray.length - 1][
+        linesArray[linesArray.length - 1].length - 1
+      ].x +
+        offset.x -
+        7,
+      linesArray[linesArray.length - 1][
+        linesArray[linesArray.length - 1].length - 1
+      ].y +
+        offset.y -
+        7,
+      14,
+      14,
+    );
+  }, [mousePosition, active, lastClick]);
 
   useEffect(() => {
     const resizeCanvas = () => {
