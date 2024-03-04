@@ -19,8 +19,8 @@ const CanvasComponent = ({ active, setActive }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [linesArray, setLinesArray] = useState([[{ x: 0, y: 0 }]]);
-  const [lastClick, setLastClick] = useState({ x: 0, y: 0 });
+  const [linesArray, setLinesArray] = useState([[{ x: false, y: false }]]);
+  const [lastClick, setLastClick] = useState({ x: false, y: false });
 
   const activeDotImage = new Image();
   activeDotImage.src = activeDot;
@@ -31,7 +31,6 @@ const CanvasComponent = ({ active, setActive }) => {
   const handleMouseMove = (e) => {
     if (panning) {
       const dx = e.clientX - mousePosition.x;
-      console.log(dx, e.clientX, mousePosition.x);
       const dy = e.clientY - mousePosition.y;
       setOffset((prevOffset) => ({
         x: prevOffset.x + dx,
@@ -41,7 +40,11 @@ const CanvasComponent = ({ active, setActive }) => {
     setMousePosition({ x: e.clientX, y: e.clientY });
   };
   const handleMouseDown = () => {
-    if (active === "home" || active === "edit") setPanning(true);
+    if (active === "home" || active === "edit") {
+      setPanning(true);
+      setLastClick({ x: false, y: false });
+      linesArray.push([{ x: false, y: false }]);
+    }
 
     if (active === "draw") {
       setLastClick({
@@ -52,8 +55,6 @@ const CanvasComponent = ({ active, setActive }) => {
         x: mousePosition.x - offset.x,
         y: mousePosition.y - offset.y,
       });
-
-      console.log(linesArray[linesArray.length - 1].length);
     }
   };
   const handleMouseUp = () => {
@@ -81,14 +82,16 @@ const CanvasComponent = ({ active, setActive }) => {
 
       context.strokeStyle = "#1681FF";
       context.lineWidth = 1.5;
-      context.beginPath();
-      context.moveTo(lastClick.x + offset.x, lastClick.y + offset.y);
-      context.lineTo(mousePosition.x, mousePosition.y);
-      context.stroke();
+      if (lastClick.x !== false) {
+        context.beginPath();
+        context.moveTo(lastClick.x + offset.x, lastClick.y + offset.y);
+        context.lineTo(mousePosition.x, mousePosition.y);
+        context.stroke();
+      }
     }
 
     for (let j = 0; j < linesArray.length; j++) {
-      for (let i = 0; i < linesArray[j].length - 1; i++) {
+      for (let i = 1; i < linesArray[j].length - 1; i++) {
         context.strokeStyle = "white";
         context.lineWidth = 1.5;
         context.beginPath();
@@ -127,6 +130,7 @@ const CanvasComponent = ({ active, setActive }) => {
       14,
       14,
     );
+    console.log(linesArray, lastClick);
   }, [mousePosition, active, lastClick]);
 
   useEffect(() => {
