@@ -2,13 +2,16 @@ import "./navbar.css";
 import { Draw, Edit, Home, Setting } from "./svg.jsx";
 import React, { useState } from "react";
 
-const Navbar = ({ active, setActive }) => {
-  const [color, setColor] = useState({
-    home: { backgroundColor: "white", color: "#3B3939" },
-    edit: { backgroundColor: "#3B3939", color: "white" },
-    draw: { backgroundColor: "#3B3939", color: "white" },
-    setting: { backgroundColor: "#3B3939", color: "white" },
-  });
+const Navbar = ({
+  active,
+  setActive,
+  linesArray,
+  setLinesArray,
+  lastClick,
+  setLastClick,
+  color,
+  setColor,
+}) => {
   return (
     <div id="backGroundDiv">
       <div id="upperDiv">
@@ -21,6 +24,10 @@ const Navbar = ({ active, setActive }) => {
               setting: { backgroundColor: "#3B3939", color: "white" },
             });
             setActive("home");
+            setLastClick({ x: false, y: false });
+            if (linesArray[linesArray.length - 1].x !== false) {
+              linesArray.push([{ x: false, y: false }]);
+            }
           }}
         >
           <Home
@@ -38,6 +45,10 @@ const Navbar = ({ active, setActive }) => {
               setting: { backgroundColor: "#3B3939", color: "white" },
             });
             setActive("edit");
+            setLastClick({ x: false, y: false });
+            if (linesArray[linesArray.length - 1].x !== false) {
+              linesArray.push([{ x: false, y: false }]);
+            }
           }}
         >
           <Edit
@@ -48,13 +59,13 @@ const Navbar = ({ active, setActive }) => {
 
         <button
           onClick={() => {
+            setActive("draw");
             setColor({
               home: { backgroundColor: "#3B3939", color: "white" },
               edit: { backgroundColor: "#3B3939", color: "white" },
               draw: { backgroundColor: "white", color: "#3B3939" },
               setting: { backgroundColor: "#3B3939", color: "white" },
             });
-            setActive("draw");
           }}
         >
           <Draw
@@ -73,6 +84,10 @@ const Navbar = ({ active, setActive }) => {
               setting: { backgroundColor: "white", color: "#3B3939" },
             });
             setActive("setting");
+            setLastClick({ x: false, y: false });
+            if (linesArray[linesArray.length - 1].x !== false) {
+              linesArray.push([{ x: false, y: false }]);
+            }
           }}
         >
           <Setting

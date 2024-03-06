@@ -6,21 +6,61 @@ import activeDot from "../assets/activeDot.svg";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
+  const [linesArray, setLinesArray] = useState([[{ x: false, y: false }]]);
+  const [lastClick, setLastClick] = useState({ x: false, y: false });
+  const [color, setColor] = useState({
+    home: { backgroundColor: "white", color: "#3B3939" },
+    edit: { backgroundColor: "#3B3939", color: "white" },
+    draw: { backgroundColor: "#3B3939", color: "white" },
+    setting: { backgroundColor: "#3B3939", color: "white" },
+  });
+
+  const [keyPress, setKeyPress] = useState({ value: false });
+  // console.log(keyPress);
   return (
     <div>
-      <Navbar active={activeNav} setActive={setActiveNav} />
-      <CanvasComponent active={activeNav} setActive={setActiveNav} />
+      <Navbar
+        active={activeNav}
+        setActive={setActiveNav}
+        linesArray={linesArray}
+        setLinesArray={setLinesArray}
+        lastClick={lastClick}
+        setLastClick={setLastClick}
+        color={color}
+        setColor={setColor}
+      />
+      <CanvasComponent
+        active={activeNav}
+        setActive={setActiveNav}
+        linesArray={linesArray}
+        setLinesArray={setLinesArray}
+        lastClick={lastClick}
+        setLastClick={setLastClick}
+        keyPress={keyPress}
+        setKeyPress={setKeyPress}
+        color={color}
+        setColor={setColor}
+      />
     </div>
   );
 };
 
-const CanvasComponent = ({ active, setActive }) => {
+const CanvasComponent = ({
+  active,
+  setActive,
+  linesArray,
+  setLinesArray,
+  lastClick,
+  setLastClick,
+  setKeyPress,
+  keyPress,
+  setColor,
+  color,
+}) => {
   const canvasRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [linesArray, setLinesArray] = useState([[{ x: false, y: false }]]);
-  const [lastClick, setLastClick] = useState({ x: false, y: false });
 
   const activeDotImage = new Image();
   activeDotImage.src = activeDot;
@@ -60,6 +100,9 @@ const CanvasComponent = ({ active, setActive }) => {
   const handleMouseUp = () => {
     setPanning(false);
   };
+  const keyPressed = (e) => {
+    setKeyPress({ value: e.key });
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -72,6 +115,63 @@ const CanvasComponent = ({ active, setActive }) => {
     context.fillRect(500 + offset.x, 500 + offset.y, 70, 70);
 
     if (active === "draw") {
+      if (keyPress.value === "Escape") {
+        setActive("home");
+        setLastClick({ x: false, y: false });
+        if (linesArray[linesArray.length - 1].x !== false) {
+          linesArray.push([{ x: false, y: false }]);
+        }
+        setColor({
+          home: { backgroundColor: "white", color: "#3B3939" },
+          edit: { backgroundColor: "#3B3939", color: "white" },
+          draw: { backgroundColor: "#3B3939", color: "white" },
+          setting: { backgroundColor: "#3B3939", color: "white" },
+        });
+        setKeyPress({ value: false });
+      }
+
+      if (keyPress.value === "Enter") {
+        setColor({
+          home: { backgroundColor: "white", color: "#3B3939" },
+          edit: { backgroundColor: "#3B3939", color: "white" },
+          draw: { backgroundColor: "#3B3939", color: "white" },
+          setting: { backgroundColor: "#3B3939", color: "white" },
+        });
+        handleMouseDown();
+        handleMouseUp();
+        setKeyPress({ value: false });
+        setLastClick({ x: false, y: false });
+        setActive("home");
+        if (linesArray[linesArray.length - 1].x !== false) {
+          linesArray.push([{ x: false, y: false }]);
+        }
+      }
+
+      context.strokeStyle = "#1681FF";
+      context.lineWidth = 1.5;
+      if (lastClick.x !== false) {
+        context.beginPath();
+        context.moveTo(lastClick.x + offset.x, lastClick.y + offset.y);
+        if (
+          lastClick.x + offset.x - 10 <= mousePosition.x &&
+          lastClick.x + offset.x + 10 >= mousePosition.x
+        ) {
+          context.strokeStyle = "red";
+          mousePosition.x = lastClick.x + offset.x;
+        }
+
+        if (
+          lastClick.y + offset.y - 10 <= mousePosition.y &&
+          lastClick.y + offset.y + 10 >= mousePosition.y
+        ) {
+          context.strokeStyle = "red";
+          mousePosition.y = lastClick.y + offset.y;
+        }
+
+        context.lineTo(mousePosition.x, mousePosition.y);
+        context.stroke();
+      }
+      //draw the active line
       context.drawImage(
         activeDotImage,
         mousePosition.x - 7,
@@ -79,15 +179,6 @@ const CanvasComponent = ({ active, setActive }) => {
         14,
         14,
       );
-
-      context.strokeStyle = "#1681FF";
-      context.lineWidth = 1.5;
-      if (lastClick.x !== false) {
-        context.beginPath();
-        context.moveTo(lastClick.x + offset.x, lastClick.y + offset.y);
-        context.lineTo(mousePosition.x, mousePosition.y);
-        context.stroke();
-      }
     }
 
     for (let j = 0; j < linesArray.length; j++) {
@@ -112,28 +203,23 @@ const CanvasComponent = ({ active, setActive }) => {
           14,
           14,
         );
+
+        if (linesArray[j].length === i + 2) {
+          context.drawImage(
+            inActiveDotImage,
+            linesArray[j][i + 1].x + offset.x - 7,
+            linesArray[j][i + 1].y + offset.y - 7,
+            14,
+            14,
+          );
+        }
       }
     }
+  }, [mousePosition, active, lastClick, keyPress]);
 
-    context.drawImage(
-      inActiveDotImage,
-      linesArray[linesArray.length - 1][
-        linesArray[linesArray.length - 1].length - 1
-      ].x +
-        offset.x -
-        7,
-      linesArray[linesArray.length - 1][
-        linesArray[linesArray.length - 1].length - 1
-      ].y +
-        offset.y -
-        7,
-      14,
-      14,
-    );
-    console.log(linesArray, lastClick);
-  }, [mousePosition, active, lastClick]);
-
+  // resize canvas
   useEffect(() => {
+    window.addEventListener("keydown", keyPressed);
     const resizeCanvas = () => {
       const canvas = canvasRef.current;
       canvas.width = window.innerWidth;
@@ -152,6 +238,7 @@ const CanvasComponent = ({ active, setActive }) => {
       onMouseMove={handleMouseMove}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onKeyDown={keyPressed}
       style={{
         cursor: active === "home" || active === "edit" ? "grabbing" : "auto",
       }}
