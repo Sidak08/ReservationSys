@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "./draw.css";
 import inActiveDot from "../assets/inActiveDot.svg";
 import activeDot from "../assets/activeDot.svg";
+import Instructions from "./ins";
+import BottomBar from "./bottomBar";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -41,6 +43,8 @@ const Draw = () => {
         color={color}
         setColor={setColor}
       />
+      <Instructions active={activeNav} />
+      <BottomBar />
     </div>
   );
 };
