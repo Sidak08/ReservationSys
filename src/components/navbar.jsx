@@ -25,7 +25,11 @@ const Navbar = ({
             });
             setActive("home");
             setLastClick({ x: false, y: false });
-            if (linesArray[linesArray.length - 1].x !== false) {
+            if (
+              linesArray[linesArray.length - 1][
+                linesArray[linesArray.length - 1].length - 1
+              ].x != false
+            ) {
               linesArray.push([{ x: false, y: false }]);
             }
           }}
@@ -46,7 +50,11 @@ const Navbar = ({
             });
             setActive("edit");
             setLastClick({ x: false, y: false });
-            if (linesArray[linesArray.length - 1].x !== false) {
+            if (
+              linesArray[linesArray.length - 1][
+                linesArray[linesArray.length - 1].length - 1
+              ].x != false
+            ) {
               linesArray.push([{ x: false, y: false }]);
             }
           }}
@@ -85,7 +93,11 @@ const Navbar = ({
             });
             setActive("setting");
             setLastClick({ x: false, y: false });
-            if (linesArray[linesArray.length - 1].x !== false) {
+            if (
+              linesArray[linesArray.length - 1][
+                linesArray[linesArray.length - 1].length - 1
+              ].x != false
+            ) {
               linesArray.push([{ x: false, y: false }]);
             }
           }}

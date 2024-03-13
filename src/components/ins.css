@@ -1,10 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Pixelify+Sans&display=swap"); /* Add a semicolon here */
-
-* {
-    padding: 0;
-    margin: 0;
-    transition: all 0.5s ease-in-out;
-}
+/* Add a semicolon to the end of the font import */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Pixelify+Sans&display=swap");
 
 .btm {
     position: absolute;
@@ -24,6 +19,22 @@
     border-radius: 5px;
     margin-top: 10px;
     padding-left: 10px;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.5s ease-in-out;
+}
+
+/* Use the nth-child selector to apply staggered animation */
+.btmBox:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.btmBox:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.btmBox:nth-child(3) {
+    transition-delay: 0.3s;
 }
 
 .text {
@@ -31,4 +42,13 @@
     color: #fff;
     font-family: "Inter", sans-serif;
     font-weight: 350;
+}
+
+.btmBox.animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.text {
+    margin: 0;
 }

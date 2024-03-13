@@ -136,4 +136,100 @@ function ActiveDot() {
   );
 }
 
-export { Draw, Edit, Home, Setting, ActiveDot };
+function RoundTable() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="50"
+      height="50"
+      fill="none"
+      viewBox="0 0 50 50"
+    >
+      <circle cx="25" cy="25" r="25" fill="#8B8B8B"></circle>
+    </svg>
+  );
+}
+
+function ReactTable() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="69"
+      height="40"
+      fill="none"
+      viewBox="0 0 69 40"
+    >
+      <rect width="69" height="40" fill="#8B8B8B" rx="6"></rect>
+    </svg>
+  );
+}
+
+function SqaureTable() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="40"
+      fill="none"
+      viewBox="0 0 40 40"
+    >
+      <rect width="40" height="40" fill="#8B8B8B" rx="6"></rect>
+    </svg>
+  );
+}
+
+function Chair() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="18"
+      fill="none"
+      viewBox="0 0 28 18"
+    >
+      <rect width="28" height="18" fill="#8B8B8B" rx="6"></rect>
+    </svg>
+  );
+}
+
+function HighChair() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <rect width="24" height="24" fill="#8B8B8B" rx="6"></rect>
+    </svg>
+  );
+}
+
+function Sofa() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="69"
+      height="27"
+      fill="none"
+      viewBox="0 0 69 27"
+    >
+      <rect width="69" height="27" fill="#8B8B8B" rx="6"></rect>
+    </svg>
+  );
+}
+
+export {
+  Draw,
+  Edit,
+  Home,
+  Setting,
+  ActiveDot,
+  RoundTable,
+  ReactTable,
+  SqaureTable,
+  Chair,
+  HighChair,
+  Sofa,
+};

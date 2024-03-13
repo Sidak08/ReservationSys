@@ -1,28 +1,26 @@
-import React from "react";
-import { useTrail, animated } from "react-spring";
+import React, { useState, useEffect } from "react";
 import "./ins.css";
 
 const Instructions = ({ active }) => {
-  const items = [
-    "Click: Confirm Continue",
-    "Escape: Return Home",
-    "Enter: Confirm Selection",
-  ];
+  const [animationActive, setAnimationActive] = useState(false);
 
-  const trail = useTrail(items.length, {
-    opacity: active === "draw" ? 1 : 0,
-    transform: active === "draw" ? "translateX(0)" : "translateX(230px)",
-    config: { duration: 150 },
-    from: { opacity: 0, transform: "translateX(230px)" },
-  });
+  useEffect(() => {
+    setAnimationActive(active === "draw");
+  }, [active]);
 
   return (
     <div className="btm">
-      {trail.map((props, index) => (
-        <animated.div key={index} style={props} className="btmBox">
-          <h1 className="text">{items[index]}</h1>
-        </animated.div>
-      ))}
+      <div className={`btmBox ${animationActive ? "animate" : ""}`}>
+        <h1 className="text">Click: Confirm Continue</h1>
+      </div>
+
+      <div className={`btmBox ${animationActive ? "animate" : ""}`}>
+        <h1 className="text">Escape: Return Home</h1>
+      </div>
+
+      <div className={`btmBox ${animationActive ? "animate" : ""}`}>
+        <h1 className="text">Enter: Confirm Selection</h1>
+      </div>
     </div>
   );
 };

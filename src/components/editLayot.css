@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Pixelify+Sans&display=swap");
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Inter", sans-serif;
+}
+
+#editLayoutDiv {
+    top: 0px;
+    left: 80px;
+    width: 313px;
+    height: 100%;
+    background-color: #1b1a1a;
+    position: absolute;
+    transform: translateX(-313px);
+    animation: fadeInOut 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+    100% {
+        transform: translateX(0);
+    }
+}
+
+#title {
+    text-align: center;
+    padding-top: 30px;
+    color: white;
+    font-size: 43px;
+    font-weight: 400;
+}
+.objectButton {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    background: #1b1a1a;
+    border: none;
+}
+.darkLine {
+    width: 90%;
+    height: 6px;
+    background-color: #212121;
+}
+.whiteLine {
+    width: 100%;
+    height: 6px;
+    background-color: #ffffff;
+    border-radius: 2px;
+}
+
+.objectButtonMainBox {
+    display: flex;
+    width: 313px;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    color: white;
+}
+.objectButtonMainBox > * {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.objectButtonMainBox > :first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.objectButtonMainBox > :first-child h4 {
+    font-weight: 250;
+    margin-top: 5px;
+    color: #8b8b8b;
+    margin-left: 15px;
+}
+#TablesDivTitle {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 5%;
+}
+#TablesDivTitle h1 {
+    color: white;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    font-weight: 300;
+}
+.active {
+    margin-top: 5px;
+    border: 2px solid #5200ff !important;
+}
