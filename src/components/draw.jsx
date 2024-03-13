@@ -12,7 +12,6 @@ import sofa from "../assets/sofa.svg";
 import Instructions from "./ins";
 import BottomBar from "./bottomBar";
 import EditLayout from "./editLayot";
-import { useSubmit } from "react-router-dom";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -103,6 +102,7 @@ const CanvasComponent = ({
   const [cursorStyle, setCursorStyle] = useState("grab");
   const [resizingObject, setResizingObject] = useState(false);
   const [movingObject, setMovingObject] = useState(false);
+  const [movingLinesArrayPoint, setMovingLinesArrayPoint] = useState(false);
 
   const handleMouseMove = (e) => {
     if (panning) {
@@ -121,12 +121,13 @@ const CanvasComponent = ({
       cursorStyle === "grab" &&
       movingObject
     ) {
-      // to move elements
+      // to grab and move elements fix the mouse posting when it is not in the center
       elementsArray[activeElement].x =
         e.clientX - offset.x - elementsArray[activeElement].width / 2;
       elementsArray[activeElement].y =
         e.clientY - offset.y - elementsArray[activeElement].height / 2;
     }
+    // NEVER TOUCH THIS RESIZING CODE PLZ also fix the negative heigh | width problem
     if (resizingObject !== false && isMouseDown && active == "edit") {
       if (elementsArray[resizingObject].reSize === "n") {
         const ogBottom =
@@ -188,13 +189,18 @@ const CanvasComponent = ({
       // elementsArray[resizingObject].height =
       //   e.clientY - elementsArray[resizingObject].y - offset.y;
     }
+    if (movingLinesArrayPoint !== false) {
+      //moving an dot
+      linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j].x =
+        e.clientX - offset.x;
+      linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j].y =
+        e.clientY - offset.y;
+    }
     setMousePosition({ x: e.clientX, y: e.clientY });
   };
   const onTouchMove = (e) => {
-    console.log("toch is active");
     setMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-    // console.log(e.touches[0].clientX - mousePosition.x);
-    // console.log(mousePosition);
+
     if (panning) {
       const dx = e.touches[0].clientX - mousePosition.x;
       const dy = e.touches[0].clientY - mousePosition.y;
@@ -276,9 +282,20 @@ const CanvasComponent = ({
     setIsMouseDown(false);
     setResizingObject(false);
     setMovingObject(false);
+    setMovingLinesArrayPoint(false);
   };
   const keyPressed = (e) => {
     setKeyPress({ value: e.key });
+  };
+
+  const isNearCanvas = (mousePosition, point, radius) => {
+    const canvasMouseX = mousePosition.x;
+    const canvasMouseY = mousePosition.y;
+    const canvasPointX = point.x + offset.x;
+    const canvasPointY = point.y + offset.y;
+    const distanceSquared =
+      (canvasMouseX - canvasPointX) ** 2 + (canvasMouseY - canvasPointY) ** 2;
+    return distanceSquared <= radius ** 2;
   };
 
   useEffect(() => {
@@ -291,6 +308,38 @@ const CanvasComponent = ({
     context.fillStyle = "#FF0000";
     context.fillRect(500 + offset.x, 500 + offset.y, 70, 70);
 
+    for (let j = 0; j < linesArray.length; j++) {
+      for (let i = 1; i < linesArray[j].length - 1; i++) {
+        context.strokeStyle = "white";
+        context.lineWidth = 1.5;
+        context.beginPath();
+        context.moveTo(
+          linesArray[j][i].x + offset.x,
+          linesArray[j][i].y + offset.y,
+        );
+        context.lineTo(
+          linesArray[j][i + 1].x + offset.x,
+          linesArray[j][i + 1].y + offset.y,
+        );
+        context.stroke();
+        context.drawImage(
+          inActiveDotImage,
+          linesArray[j][i].x + offset.x - 7,
+          linesArray[j][i].y + offset.y - 7,
+          14,
+          14,
+        );
+        if (linesArray[j].length === i + 2) {
+          context.drawImage(
+            inActiveDotImage,
+            linesArray[j][i + 1].x + offset.x - 7,
+            linesArray[j][i + 1].y + offset.y - 7,
+            14,
+            14,
+          );
+        }
+      }
+    }
     if (active == "home") {
       setCursorStyle("grab");
     }
@@ -305,6 +354,7 @@ const CanvasComponent = ({
         sofa: { height: 30, width: 70 },
       };
       if (selectedElement != false) {
+        //to draw the element
         switch (selectedElement) {
           case "Round Table":
             HoverEditImage.src = roundTable;
@@ -346,6 +396,7 @@ const CanvasComponent = ({
         );
       }
       for (let i = 0; i < elementsArray.length; i++) {
+        //drawing the lines and corner circle on hover | selecting element
         if (
           (mousePosition.x >= elementsArray[i].x + offset.x &&
             mousePosition.x <=
@@ -409,13 +460,13 @@ const CanvasComponent = ({
           );
           setPanning(false);
         }
+        //the wierd cursor for resizing
         if (
           mousePosition.x - 6 <= elementsArray[i].x + offset.x &&
           mousePosition.x + 6 >= elementsArray[i].x + offset.x &&
           mousePosition.y - 6 <= elementsArray[i].y + offset.y &&
           mousePosition.y + 6 >= elementsArray[i].y + offset.y
         ) {
-          console.log("north-west corner");
           elementsArray[i].reSize = "nw";
           setCursorStyle("nw-resize");
         } else if (
@@ -426,7 +477,6 @@ const CanvasComponent = ({
           mousePosition.y - 6 <= elementsArray[i].y + offset.y &&
           mousePosition.y + 6 >= elementsArray[i].y + offset.y
         ) {
-          console.log("top northeast corner");
           setCursorStyle("ne-resize");
           elementsArray[i].reSize = "ne";
         } else if (
@@ -439,7 +489,6 @@ const CanvasComponent = ({
           mousePosition.y + 6 >=
             elementsArray[i].y + offset.y + elementsArray[i].height
         ) {
-          console.log("bottom southeast corner");
           setCursorStyle("se-resize");
           elementsArray[i].reSize = "se";
         } else if (
@@ -450,7 +499,6 @@ const CanvasComponent = ({
           mousePosition.y + 6 >=
             elementsArray[i].y + offset.y + elementsArray[i].height
         ) {
-          console.log("bottom southwest corner");
           setCursorStyle("sw-resize");
           elementsArray[i].reSize = "sw";
         } else if (
@@ -460,7 +508,6 @@ const CanvasComponent = ({
           mousePosition.y <=
             elementsArray[i].y + offset.y + elementsArray[i].height
         ) {
-          console.log("left");
           setCursorStyle("w-resize");
           elementsArray[i].reSize = "w";
         } else if (
@@ -472,7 +519,6 @@ const CanvasComponent = ({
           mousePosition.y <=
             elementsArray[i].y + offset.y + elementsArray[i].height
         ) {
-          console.log("right");
           setCursorStyle("e-resize");
           elementsArray[i].reSize = "e";
         } else if (
@@ -482,7 +528,6 @@ const CanvasComponent = ({
           mousePosition.y - 6 <= elementsArray[i].y + offset.y &&
           mousePosition.y + 6 >= elementsArray[i].y + offset.y
         ) {
-          console.log("top");
           setCursorStyle("n-resize");
           elementsArray[i].reSize = "n";
         } else if (
@@ -494,11 +539,28 @@ const CanvasComponent = ({
           mousePosition.y + 6 >=
             elementsArray[i].y + offset.y + elementsArray[i].height
         ) {
-          console.log("bottom");
           setCursorStyle("s-resize");
           elementsArray[i].reSize = "s";
         } else {
           elementsArray[i].reSize = false;
+        }
+      }
+      for (let i = 0; i < linesArray.length; i++) {
+        for (let j = 0; j < linesArray[i].length; j++) {
+          if (isNearCanvas(mousePosition, linesArray[i][j], 15)) {
+            if (isMouseDown) {
+              setMovingLinesArrayPoint({ i: i, j: j });
+              setPanning(false);
+            } else {
+              context.drawImage(
+                activeDotImage,
+                linesArray[i][j].x + offset.x - 7,
+                linesArray[i][j].y + offset.y - 7,
+                14,
+                14,
+              );
+            }
+          }
         }
       }
     }
@@ -570,7 +632,7 @@ const CanvasComponent = ({
         context.stroke();
       }
 
-      //draw the active line
+      //draw the active dot
       context.drawImage(
         activeDotImage,
         mousePosition.x - 7,
@@ -580,39 +642,6 @@ const CanvasComponent = ({
       );
     }
 
-    for (let j = 0; j < linesArray.length; j++) {
-      for (let i = 1; i < linesArray[j].length - 1; i++) {
-        context.strokeStyle = "white";
-        context.lineWidth = 1.5;
-        context.beginPath();
-        context.moveTo(
-          linesArray[j][i].x + offset.x,
-          linesArray[j][i].y + offset.y,
-        );
-        context.lineTo(
-          linesArray[j][i + 1].x + offset.x,
-          linesArray[j][i + 1].y + offset.y,
-        );
-        context.stroke();
-        // inActiveDotImage.src = chair;
-        context.drawImage(
-          inActiveDotImage,
-          linesArray[j][i].x + offset.x - 7,
-          linesArray[j][i].y + offset.y - 7,
-          14,
-          14,
-        );
-        if (linesArray[j].length === i + 2) {
-          context.drawImage(
-            inActiveDotImage,
-            linesArray[j][i + 1].x + offset.x - 7,
-            linesArray[j][i + 1].y + offset.y - 7,
-            14,
-            14,
-          );
-        }
-      }
-    }
     for (let i = 0; i < elementsArray.length; i++) {
       context.drawImage(
         elementsArray[i].image,
@@ -622,6 +651,7 @@ const CanvasComponent = ({
         elementsArray[i].height,
       );
     }
+    console.log(movingLinesArrayPoint);
   }, [mousePosition, active, lastClick, keyPress, initialization]);
 
   // resize canvas
