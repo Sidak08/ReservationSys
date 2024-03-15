@@ -472,7 +472,7 @@ const CanvasComponent = ({
         14,
       );
     }
-    if (active === "draw" || active === "edit") {
+    if (active === "draw" || active === "edit" || active === "home") {
       if (keyPress.value === "Backspace") {
         setKeyPress({ value: false });
         elementsArray.splice(activeElement, 1);
@@ -592,7 +592,11 @@ const CanvasComponent = ({
         y: prevOffset.y + dy,
       }));
     }
-    if (panning == false && active == "edit" && isMouseDown) {
+    if (
+      panning == false &&
+      (active == "edit" || active === "home") &&
+      isMouseDown
+    ) {
       // to move the element
       elementsArray[activeElement].x =
         e.clientX - offset.x - elementsArray[activeElement].width / 2;
@@ -608,6 +612,24 @@ const CanvasComponent = ({
     if (active === "home" || active === "edit") {
       setPanning(true);
       setLastClick({ x: false, y: false });
+    }
+
+    if (active === "home" || active === "edit") {
+      for (let i = 0; i < elementsArray.length; i++) {
+        if (
+          clientX >= elementsArray[i].x + offset.x &&
+          clientX <= elementsArray[i].x + offset.x + elementsArray[i].width &&
+          clientY >= elementsArray[i].y + offset.y &&
+          clientY <= elementsArray[i].y + offset.y + elementsArray[i].height
+        ) {
+          elementsArray[i].selected = true;
+          setActiveElement(i);
+          setMovingObject(true);
+        } else {
+          elementsArray[i].selected = false;
+        }
+      }
+      console.log(activeElement);
     }
 
     if (active === "draw") {
@@ -635,21 +657,6 @@ const CanvasComponent = ({
           reservation: [],
         });
         setSelectedElement(false);
-      }
-
-      for (let i = 0; i < elementsArray.length; i++) {
-        if (
-          clientX >= elementsArray[i].x + offset.x &&
-          clientX <= elementsArray[i].x + offset.x + elementsArray[i].width &&
-          clientY >= elementsArray[i].y + offset.y &&
-          clientY <= elementsArray[i].y + offset.y + elementsArray[i].height
-        ) {
-          elementsArray[i].selected = true;
-          setActiveElement(i);
-          setMovingObject(true);
-        } else {
-          elementsArray[i].selected = false;
-        }
       }
 
       for (let i = 0; i < elementsArray.length; i++) {
