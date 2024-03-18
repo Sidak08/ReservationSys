@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Pixelify+Sans&display=swap");
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Inter", sans-serif;
+}
+
+.homeReserveDiv {
+    height: 0px;
+    width: 0px;
+    position: absolute;
+    top: calc(50% - 22.5px);
+    right: 11px;
+    border-radius: 10px;
+    background: rgba(27, 26, 26, 0.83);
+    backdrop-filter: blur(5.9px);
+    -webkit-backdrop-filter: blur(5.9px);
+    border: 1px solid rgba(27, 26, 26, 0.88);
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+}
+
+.homeReserveDiv.animate {
+    height: 92%;
+    width: 370px;
+    opacity: 1;
+    transform: translateY(-50%);
+}

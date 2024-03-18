@@ -6,8 +6,8 @@
     font-family: "Inter", sans-serif;
 }
 .infoBoxDiv {
-    height: 100px;
-    width: 200px;
+    height: 0px;
+    width: 0px;
     position: absolute;
     right: 20px;
     bottom: 60px;
@@ -18,13 +18,20 @@
     border: 1px solid rgba(27, 26, 26, 0.88);
     opacity: 0;
     transform: translateX(100px);
-    transition: all 0.4s ease-in-out;
+    transition:
+        all 0.4s ease-in-out,
+        width 0.5s ease-in-out,
+        height 0.5s ease-in-out; /* Include width and height transition */
+    width: 200px; /* Set initial width */
+    height: 100px; /* Set initial height */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 }
 .infoBoxDiv.animate {
+    height: 100px;
+    width: 200px;
     opacity: 1;
     transform: translateX(0);
 }

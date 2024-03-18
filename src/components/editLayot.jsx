@@ -1,5 +1,5 @@
 import "./editLayot.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   RoundTable,
   ReactTable,
@@ -10,25 +10,29 @@ import {
 } from "./svg";
 
 const EditLayout = ({ active, selectedElement, setSelectedElement }) => {
-  if (active === "edit") {
-    return (
-      <div id="editLayoutDiv">
-        <h1 id="title">Edit Layout</h1>
-        <div>
-          <TablesDiv
-            selectedElement={selectedElement}
-            setSelectedElement={setSelectedElement}
-            otherInfo={{}}
-          />
-          <SeatsDiv
-            selectedElement={selectedElement}
-            setSelectedElement={setSelectedElement}
-            otherInfo={{}}
-          />
-        </div>
+  const [animationActive, setAnimationActive] = useState(false);
+
+  useEffect(() => {
+    setAnimationActive(active === "edit");
+  }, [active]);
+
+  return (
+    <div className={`editLayoutDiv ${animationActive ? "animate" : ""}`}>
+      <h1 id="title">Edit Layout</h1>
+      <div>
+        <TablesDiv
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+          otherInfo={{}}
+        />
+        <SeatsDiv
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+          otherInfo={{}}
+        />
       </div>
-    );
-  } else return;
+    </div>
+  );
 };
 
 const TablesDiv = ({ selectedElement, setSelectedElement, otherInfo }) => {

@@ -13,6 +13,7 @@ import Instructions from "./ins";
 import BottomBar from "./bottomBar";
 import EditLayout from "./editLayot";
 import InfoBox from "./infoBox";
+import HomeReserve from "./homeReserve";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -77,6 +78,11 @@ const Draw = () => {
         activeElement={activeElement}
         elementsArray={elementsArray}
         resizingObject={resizingObject}
+      />
+      <HomeReserve
+        activeElement={activeElement}
+        activeNav={activeNav}
+        elementsArray={elementsArray}
       />
     </div>
   );
@@ -171,6 +177,38 @@ const CanvasComponent = ({
     }
     if (active == "home") {
       setCursorStyle("grab");
+      for (let i = 0; i < elementsArray.length; i++) {
+        if (
+          isNearObject(mousePosition, elementsArray[i], 20) ||
+          elementsArray[i].selected
+        ) {
+          context.strokeStyle = "#3F12D7";
+          context.lineWidth = 2;
+          context.beginPath();
+          context.moveTo(
+            elementsArray[i].x + offset.x,
+            elementsArray[i].y + offset.y,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x + elementsArray[i].width,
+            elementsArray[i].y + offset.y,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x + elementsArray[i].width,
+            elementsArray[i].y + offset.y + elementsArray[i].height,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x,
+            elementsArray[i].y + offset.y + elementsArray[i].height,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x,
+            elementsArray[i].y + offset.y,
+          );
+          context.stroke();
+          setPanning(false);
+        }
+      }
     }
     if (active === "edit") {
       setCursorStyle("grab");
@@ -229,6 +267,7 @@ const CanvasComponent = ({
           hoverImage.height,
         );
       }
+
       for (let i = 0; i < elementsArray.length; i++) {
         if (
           isNearObject(mousePosition, elementsArray[i], 20) ||
@@ -610,6 +649,29 @@ const CanvasComponent = ({
       setLastClick({ x: false, y: false });
     }
 
+    if (active === "home") {
+      for (let i = 0; i < elementsArray.length; i++) {
+        if (
+          clientX >= elementsArray[i].x + offset.x &&
+          clientX <= elementsArray[i].x + offset.x + elementsArray[i].width &&
+          clientY >= elementsArray[i].y + offset.y &&
+          clientY <= elementsArray[i].y + offset.y + elementsArray[i].height
+        ) {
+          elementsArray[i].selected = true;
+          setActiveElement(i);
+        } else {
+          elementsArray[i].selected = false;
+        }
+      }
+      const reset = (elementsArray) => {
+        for (let i = 0; i < elementsArray.length; i++) {
+          if (elementsArray[i].selected === true) return;
+        }
+        setActiveElement(false);
+        return;
+      };
+      reset(elementsArray);
+    }
     if (active === "draw") {
       setLastClick({
         x: clientX - offset.x,
@@ -620,7 +682,6 @@ const CanvasComponent = ({
         y: clientY - offset.y,
       });
     }
-
     if (active === "edit") {
       if (selectedElement !== false) {
         elementsArray.push({

@@ -6,21 +6,24 @@
     font-family: "Inter", sans-serif;
 }
 
-#editLayoutDiv {
+.editLayoutDiv {
     top: 0px;
     left: 80px;
     width: 313px;
     height: 100%;
     background-color: #1b1a1a;
     position: absolute;
-    transform: translateX(-313px);
-    animation: fadeInOut 0.3s ease-in-out forwards;
+    opacity: 0;
+    transform: translateX(-100px);
+    transition:
+        all 0.3s ease-in-out,
+        width 0.5s ease-in-out,
+        height 0.5s ease-in-out;
 }
 
-@keyframes fadeInOut {
-    100% {
-        transform: translateX(0);
-    }
+.editLayoutDiv.animate {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 #title {
@@ -30,6 +33,7 @@
     font-size: 43px;
     font-weight: 400;
 }
+
 .objectButton {
     width: 100%;
     height: 80px;
@@ -40,11 +44,13 @@
     background: #1b1a1a;
     border: none;
 }
+
 .darkLine {
     width: 90%;
     height: 6px;
     background-color: #212121;
 }
+
 .whiteLine {
     width: 100%;
     height: 6px;
@@ -60,22 +66,26 @@
     height: 80px;
     color: white;
 }
+
 .objectButtonMainBox > * {
     margin-left: 20px;
     margin-right: 20px;
 }
+
 .objectButtonMainBox > :first-child {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
 }
+
 .objectButtonMainBox > :first-child h4 {
     font-weight: 250;
     margin-top: 5px;
     color: #8b8b8b;
     margin-left: 15px;
 }
+
 #TablesDivTitle {
     width: 90%;
     display: flex;
@@ -84,12 +94,14 @@
     align-items: flex-start;
     margin-left: 5%;
 }
+
 #TablesDivTitle h1 {
     color: white;
     margin-bottom: 8px;
     margin-top: 20px;
     font-weight: 300;
 }
+
 .active {
     margin-top: 5px;
     border: 2px solid #5200ff !important;
