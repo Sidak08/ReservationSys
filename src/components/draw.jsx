@@ -20,6 +20,7 @@ const Draw = () => {
   const [linesArray, setLinesArray] = useState([[{ x: false, y: false }]]);
   const [lastClick, setLastClick] = useState({ x: false, y: false });
   const [selectedElement, setSelectedElement] = useState(false);
+
   const [elementsArray, setElementsArray] = useState([]);
   const [activeElement, setActiveElement] = useState(false);
   const [keyPress, setKeyPress] = useState({ value: false });
@@ -31,6 +32,7 @@ const Draw = () => {
     draw: { backgroundColor: "#3B3939", color: "white" },
     setting: { backgroundColor: "#3B3939", color: "white" },
   });
+  const [upComingReservation, setUpComingReservation] = useState([]);
 
   return (
     <div>
@@ -83,6 +85,8 @@ const Draw = () => {
         activeElement={activeElement}
         activeNav={activeNav}
         elementsArray={elementsArray}
+        upComingReservation={upComingReservation}
+        setElementsArray={setElementsArray}
       />
     </div>
   );
@@ -511,14 +515,21 @@ const CanvasComponent = ({
         14,
       );
     }
-    if (active === "draw" || active === "edit") {
+    if (active === "edit") {
       if (keyPress.value === "Backspace") {
         setKeyPress({ value: false });
         elementsArray.splice(activeElement, 1);
         setActiveElement(false);
       }
     }
-  }, [mousePosition, active, lastClick, keyPress, initialization]);
+  }, [
+    mousePosition,
+    active,
+    lastClick,
+    keyPress,
+    initialization,
+    elementsArray,
+  ]);
 
   const handleMouseMove = (e) => {
     if (panning) {
@@ -761,7 +772,9 @@ const CanvasComponent = ({
     }
   };
   const keyPressed = (e) => {
-    setKeyPress({ value: e.key });
+    if (active === "edit" || active === "draw") {
+      setKeyPress({ value: e.key });
+    }
   };
 
   // resize canvas
