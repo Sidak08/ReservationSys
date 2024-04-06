@@ -13,12 +13,14 @@ import Instructions from "./ins";
 import BottomBar from "./bottomBar";
 import EditLayout from "./editLayot";
 import InfoBox from "./infoBox";
+import HomeReserve from "./homeReserve";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
   const [linesArray, setLinesArray] = useState([[{ x: false, y: false }]]);
   const [lastClick, setLastClick] = useState({ x: false, y: false });
   const [selectedElement, setSelectedElement] = useState(false);
+
   const [elementsArray, setElementsArray] = useState([]);
   const [activeElement, setActiveElement] = useState(false);
   const [keyPress, setKeyPress] = useState({ value: false });
@@ -30,6 +32,7 @@ const Draw = () => {
     draw: { backgroundColor: "#3B3939", color: "white" },
     setting: { backgroundColor: "#3B3939", color: "white" },
   });
+  const [upComingReservation, setUpComingReservation] = useState([]);
 
   return (
     <div>
@@ -77,6 +80,13 @@ const Draw = () => {
         activeElement={activeElement}
         elementsArray={elementsArray}
         resizingObject={resizingObject}
+      />
+      <HomeReserve
+        activeElement={activeElement}
+        activeNav={activeNav}
+        elementsArray={elementsArray}
+        upComingReservation={upComingReservation}
+        setElementsArray={setElementsArray}
       />
     </div>
   );
@@ -171,6 +181,38 @@ const CanvasComponent = ({
     }
     if (active == "home") {
       setCursorStyle("grab");
+      for (let i = 0; i < elementsArray.length; i++) {
+        if (
+          isNearObject(mousePosition, elementsArray[i], 20) ||
+          elementsArray[i].selected
+        ) {
+          context.strokeStyle = "#3F12D7";
+          context.lineWidth = 2;
+          context.beginPath();
+          context.moveTo(
+            elementsArray[i].x + offset.x,
+            elementsArray[i].y + offset.y,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x + elementsArray[i].width,
+            elementsArray[i].y + offset.y,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x + elementsArray[i].width,
+            elementsArray[i].y + offset.y + elementsArray[i].height,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x,
+            elementsArray[i].y + offset.y + elementsArray[i].height,
+          );
+          context.lineTo(
+            elementsArray[i].x + offset.x,
+            elementsArray[i].y + offset.y,
+          );
+          context.stroke();
+          setPanning(false);
+        }
+      }
     }
     if (active === "edit") {
       setCursorStyle("grab");
@@ -229,6 +271,7 @@ const CanvasComponent = ({
           hoverImage.height,
         );
       }
+
       for (let i = 0; i < elementsArray.length; i++) {
         if (
           isNearObject(mousePosition, elementsArray[i], 20) ||
@@ -472,14 +515,21 @@ const CanvasComponent = ({
         14,
       );
     }
-    if (active === "draw" || active === "edit" || active === "home") {
+    if (active === "edit") {
       if (keyPress.value === "Backspace") {
         setKeyPress({ value: false });
         elementsArray.splice(activeElement, 1);
         setActiveElement(false);
       }
     }
-  }, [mousePosition, active, lastClick, keyPress, initialization]);
+  }, [
+    mousePosition,
+    active,
+    lastClick,
+    keyPress,
+    initialization,
+    elementsArray,
+  ]);
 
   const handleMouseMove = (e) => {
     if (panning) {
@@ -592,11 +642,7 @@ const CanvasComponent = ({
         y: prevOffset.y + dy,
       }));
     }
-    if (
-      panning == false &&
-      (active == "edit" || active === "home") &&
-      isMouseDown
-    ) {
+    if (panning == false && active == "edit" && isMouseDown) {
       // to move the element
       elementsArray[activeElement].x =
         e.clientX - offset.x - elementsArray[activeElement].width / 2;
@@ -614,7 +660,7 @@ const CanvasComponent = ({
       setLastClick({ x: false, y: false });
     }
 
-    if (active === "home" || active === "edit") {
+    if (active === "home") {
       for (let i = 0; i < elementsArray.length; i++) {
         if (
           clientX >= elementsArray[i].x + offset.x &&
@@ -624,14 +670,19 @@ const CanvasComponent = ({
         ) {
           elementsArray[i].selected = true;
           setActiveElement(i);
-          setMovingObject(true);
         } else {
           elementsArray[i].selected = false;
         }
       }
-      console.log(activeElement);
+      const reset = (elementsArray) => {
+        for (let i = 0; i < elementsArray.length; i++) {
+          if (elementsArray[i].selected === true) return;
+        }
+        setActiveElement(false);
+        return;
+      };
+      reset(elementsArray);
     }
-
     if (active === "draw") {
       setLastClick({
         x: clientX - offset.x,
@@ -642,7 +693,6 @@ const CanvasComponent = ({
         y: clientY - offset.y,
       });
     }
-
     if (active === "edit") {
       if (selectedElement !== false) {
         elementsArray.push({
@@ -657,6 +707,21 @@ const CanvasComponent = ({
           reservation: [],
         });
         setSelectedElement(false);
+      }
+
+      for (let i = 0; i < elementsArray.length; i++) {
+        if (
+          clientX >= elementsArray[i].x + offset.x &&
+          clientX <= elementsArray[i].x + offset.x + elementsArray[i].width &&
+          clientY >= elementsArray[i].y + offset.y &&
+          clientY <= elementsArray[i].y + offset.y + elementsArray[i].height
+        ) {
+          elementsArray[i].selected = true;
+          setActiveElement(i);
+          setMovingObject(true);
+        } else {
+          elementsArray[i].selected = false;
+        }
       }
 
       for (let i = 0; i < elementsArray.length; i++) {
@@ -707,7 +772,9 @@ const CanvasComponent = ({
     }
   };
   const keyPressed = (e) => {
-    setKeyPress({ value: e.key });
+    if (active === "edit" || active === "draw") {
+      setKeyPress({ value: e.key });
+    }
   };
 
   // resize canvas
