@@ -5,7 +5,7 @@ const HomeReserve = ({
   activeElement,
   activeNav,
   elementsArray,
-  upComingReservation,
+  upComingReservations,
   setElementsArray,
 }) => {
   const [animationActive, setAnimationActive] = useState(false);
@@ -15,6 +15,7 @@ const HomeReserve = ({
   });
   const [forceRerender, setForceRerender] = useState(1);
   const bookLength = 120;
+  const [upComingReserveAni, setUpComingReserveAni] = useState(false);
 
   useEffect(() => {
     setAnimationActive(
@@ -31,44 +32,65 @@ const HomeReserve = ({
     }
   }, [activeElement, activeNav]);
 
+  useEffect(() => {
+    setUpComingReserveAni(activeNav === "home");
+  }, [activeElement, activeNav]);
+
   if (
     lastActiveElement !== false &&
     activeNav === "home" &&
     activeElement !== false
   ) {
     return (
-      <div className={`homeReserveDiv ${animationActive ? "animate" : ""}`}>
-        <h1>{elementsArray[lastActiveElement].title}</h1>
-        <div id="homeReserveStatusDiv">
-          <h4>Status</h4>
-          <div className="homeReserveLine" />
-          <StatusDiv info={elementsArray[lastActiveElement]} />
+      <>
+        <div className={`homeReserveDiv ${animationActive ? "animate" : ""}`}>
+          <h1>{elementsArray[lastActiveElement].title}</h1>
+          <div id="homeReserveStatusDiv">
+            <h4>Status</h4>
+            <div className="homeReserveLine" />
+            <StatusDiv info={elementsArray[lastActiveElement].reservation} />
+          </div>
+          <BookSpot
+            activeElement={activeElement}
+            elementsArray={elementsArray}
+            upComingReservations={upComingReservations}
+            setElementsArray={setElementsArray}
+            forceRerender={forceRerender}
+            setForceRerender={setForceRerender}
+            bookLength={bookLength}
+          />
         </div>
-        <BookSpot
-          activeElement={activeElement}
-          elementsArray={elementsArray}
-          upComingReservation={upComingReservation}
-          setElementsArray={setElementsArray}
-          forceRerender={forceRerender}
-          setForceRerender={setForceRerender}
-          bookLength={bookLength}
-        />
-      </div>
+        <div
+          className={`upComingReserveDiv ${upComingReserveAni ? "animate" : ""}`}
+        >
+          <h4 id="upComingReserveTxt">Upcoming Reservations</h4>
+          <div className="homeReserveLine" />
+          <UpcomingReservations info={upComingReservations} />
+        </div>
+      </>
     );
   } else {
     return (
-      <div className={`homeReserveDiv ${animationActive ? "animate" : ""}`}>
-        <h1>{lastActiveElementInfo.title}</h1>
-      </div>
+      <>
+        <div className={`homeReserveDiv ${animationActive ? "animate" : ""}`}>
+          <h1>{lastActiveElementInfo.title}</h1>
+        </div>
+        <div
+          className={`upComingReserveDiv ${upComingReserveAni ? "animate" : ""}`}
+        >
+          <h4 id="upComingReserveTxt">Upcoming Reservations</h4>
+          <div className="homeReserveLine" />
+          <UpcomingReservations info={upComingReservations} />
+        </div>
+      </>
     );
   }
 };
 
 const StatusDiv = ({ info }) => {
-  for (let i = 0; i < info.reservation.lenght; i++) {}
   return (
-    <div id="homeReserveTimeSlotDivBox">
-      {info.reservation.map((reservationItem, index) => (
+    <div className="homeReserveTimeSlotDivBox">
+      {info.map((reservationItem, index) => (
         <TimeSlotDiv
           key={index}
           info={{
@@ -77,6 +99,8 @@ const StatusDiv = ({ info }) => {
             color: "red",
             status: "busy",
             tableNum: 3,
+            startDate: reservationItem.startDate,
+            endDate: reservationItem.endDate,
           }}
         />
       ))}
@@ -90,7 +114,11 @@ const TimeSlotDiv = ({ info }) => {
       <h4>
         {info.startTime} - {info.endTime}
       </h4>
-      <h4> Table: {info.tableNum} </h4>
+      <h4>
+        {info.startDate === info.endDate
+          ? `Date: ${info.startDate.substring(info.startDate.length - 2)}`
+          : `Date: ${info.startDate.substring(info.startDate.length - 2)}:${info.endDate.substring(info.endDate.length - 2)}`}
+      </h4>
       <div>
         <div
           className="timeSlotDivCircle"
@@ -106,7 +134,7 @@ const BookSpot = ({
   activeElement,
   elementsArray,
   setElementsArray,
-  upComingReservation,
+  upComingReservations,
   forceRerender,
   setForceRerender,
   bookLength,
@@ -121,23 +149,22 @@ const BookSpot = ({
   const [bookTime, setBookTime] = useState(time);
   const [spotAvailabe, setSpotAvailble] = useState(false);
 
-  const checkAvailability = (bookTime, bookDate, bookEndTime) => {
+  const checkAvailability = (bookTime, bookDate, bookEndTime, bookEndDate) => {
     bookTime =
       parseInt(bookTime.split(":")[0]) * 60 + parseInt(bookTime.split(":")[1]);
+    bookEndTime =
+      parseInt(bookEndTime.split(":")[0]) * 60 +
+      parseInt(bookEndTime.split(":")[1]);
 
-    // const bookEndTime = bookTime + bookLength;
     for (let i = 0; i < elementsArray[activeElement].reservation.length; i++) {
       const element = elementsArray[activeElement].reservation[i];
 
-      const elementStartTime = parseInt(
-        parseInt(element.startTime.split(":")[0] * 60) +
-          parseInt(element.startTime.split(":")[1]),
-      );
-
-      const elementEndTime = parseInt(
+      const elementStartTime =
+        parseInt(element.startTime.split(":")[0]) * 60 +
+        parseInt(element.startTime.split(":")[1]);
+      const elementEndTime =
         parseInt(element.endTime.split(":")[0]) * 60 +
-          parseInt(element.endTime.split(":")[1]),
-      );
+        parseInt(element.endTime.split(":")[1]);
 
       if (bookDate === element.startDate) {
         if (
@@ -147,6 +174,12 @@ const BookSpot = ({
         ) {
           return false;
         }
+      } else if (
+        bookDate < element.endDate &&
+        bookEndDate > element.startDate
+      ) {
+        // If booking spans across multiple days, and the element's reservation also spans across the booked dates
+        return false;
       }
     }
 
@@ -179,48 +212,17 @@ const BookSpot = ({
   };
 
   useEffect(() => {
-    if (
-      checkAvailability(
-        bookTime,
-        bookDate,
-        parseInt(bookTime.split(":")[0]) * 60 +
-          parseInt(bookTime.split(":")[1]) +
-          bookLength,
-      )
-    ) {
+    const { endTime, endDate } = calculateEndTime(
+      bookTime,
+      bookDate,
+      bookLength,
+    );
+    if (checkAvailability(bookTime, bookDate, endTime, endDate)) {
       setSpotAvailble(true);
     } else {
       setSpotAvailble(false);
     }
   }, [bookDate, bookTime]);
-
-  // useEffect(() => {
-  //   if (elementsArray[activeElement].reservation.length > 1) {
-  //     const activeReservation = elementsArray[activeElement].reservation;
-  //     const lastReservationIndex = activeReservation.length - 1;
-  //     const lastReservation = activeReservation[lastReservationIndex];
-  //     const lastReservationStartTime =
-  //       parseInt(lastReservation.startTime.split(":")[0]) * 60 +
-  //       parseInt(lastReservation.startTime.split(":")[1]);
-
-  //     for (let i = 0; i < lastReservationIndex; i++) {
-  //       const currentReservationStartTime =
-  //         parseInt(activeReservation[i].startTime.split(":")[0]) * 60 +
-  //         parseInt(activeReservation[i].startTime.split(":")[1]);
-
-  //       if (lastReservationStartTime <= currentReservationStartTime) {
-  //         setForceRerender(forceRerender + 1);
-  //         // Insert the last reservation at the correct position
-  //         activeReservation.splice(i, 0, lastReservation);
-  //         // Remove the duplicate last reservation
-  //         activeReservation.splice(lastReservationIndex + 1, 1);
-  //         break; // Exit the loop after inserting the reservation
-  //       }
-  //     }
-
-  //     elementsArray[activeElement].reservation = activeReservation;
-  //   }
-  // }, [elementsArray, activeElement, forceRerender]);
 
   useEffect(() => {
     if (elementsArray[activeElement].reservation.length > 1) {
@@ -250,8 +252,40 @@ const BookSpot = ({
           activeReservation.splice(lastReservationIndex + 1, 1);
           // Trigger re-render by toggling the forceRerender state
           setForceRerender((prev) => !prev);
-          break; // Exit the loop after inserting the reservation
           elementsArray[activeElement].reservation = activeReservation;
+          break; // Exit the loop after inserting the reservation
+        }
+      }
+    }
+    if (upComingReservations.length > 1) {
+      const activeReservation = upComingReservations;
+      const lastReservationIndex = activeReservation.length - 1;
+      const lastReservation = activeReservation[lastReservationIndex];
+      const lastReservationStartTime =
+        parseInt(lastReservation.startTime.split(":")[0]) * 60 +
+        parseInt(lastReservation.startTime.split(":")[1]);
+      const lastReservationStartDate = new Date(lastReservation.startDate);
+
+      for (let i = 0; i < lastReservationIndex; i++) {
+        const currentReservationStartTime =
+          parseInt(activeReservation[i].startTime.split(":")[0]) * 60 +
+          parseInt(activeReservation[i].startTime.split(":")[1]);
+        const currentReservationStartDate = new Date(
+          activeReservation[i].startDate,
+        );
+
+        if (
+          lastReservationStartDate <= currentReservationStartDate &&
+          lastReservationStartTime <= currentReservationStartTime
+        ) {
+          // Insert the last reservation at the correct position
+          activeReservation.splice(i, 0, lastReservation);
+          // Remove the duplicate last reservation
+          activeReservation.splice(lastReservationIndex + 1, 1);
+          // Trigger re-render by toggling the forceRerender state
+          setForceRerender((prev) => !prev);
+          upComingReservations = activeReservation;
+          break; // Exit the loop after inserting the reservation
         }
       }
     }
@@ -267,21 +301,28 @@ const BookSpot = ({
 
   const handleSubmit = () => {
     setForceRerender(forceRerender + 1);
-    if (
-      checkAvailability(
-        bookTime,
-        bookDate,
-        parseInt(bookTime.split(":")[0]) * 60 +
-          parseInt(bookTime.split(":")[1]) +
-          bookLength,
-      )
-    ) {
+    const { endTime, endDate } = calculateEndTime(
+      bookTime,
+      bookDate,
+      bookLength,
+    );
+    if (checkAvailability(bookTime, bookDate, endTime, endDate)) {
       const { endTime, endDate } = calculateEndTime(
         bookTime,
         bookDate,
         bookLength,
       );
       elementsArray[activeElement].reservation.push({
+        name: "anon",
+        number: "876 887 7777",
+        startTime: bookTime,
+        endTime: endTime,
+        startDate: bookDate,
+        endDate: endDate,
+        people: 7,
+        email: "spam@gmail.com",
+      });
+      upComingReservations.push({
         name: "anon",
         number: "876 887 7777",
         startTime: bookTime,
@@ -322,6 +363,27 @@ const BookSpot = ({
       >
         <h4>Book</h4>
       </button>
+    </div>
+  );
+};
+
+const UpcomingReservations = ({ info }) => {
+  return (
+    <div className="upComingRervationDiv">
+      {info.map((reservationItem, index) => (
+        <TimeSlotDiv
+          key={index}
+          info={{
+            startTime: reservationItem.startTime,
+            endTime: reservationItem.endTime,
+            color: "red",
+            status: "busy",
+            tableNum: 3,
+            startDate: reservationItem.startDate,
+            endDate: reservationItem.endDate,
+          }}
+        />
+      ))}
     </div>
   );
 };

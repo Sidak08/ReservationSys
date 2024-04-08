@@ -85,7 +85,7 @@ const Draw = () => {
         activeElement={activeElement}
         activeNav={activeNav}
         elementsArray={elementsArray}
-        upComingReservation={upComingReservation}
+        upComingReservations={upComingReservation}
         setElementsArray={setElementsArray}
       />
     </div>
@@ -516,11 +516,17 @@ const CanvasComponent = ({
       );
     }
     if (active === "edit") {
+      console.log(keyPress.value);
       if (keyPress.value === "Backspace") {
-        setKeyPress({ value: false });
-        elementsArray.splice(activeElement, 1);
-        setActiveElement(false);
+        if (activeElement !== false) {
+          setKeyPress({ value: false });
+          elementsArray.splice(activeElement, 1);
+          setActiveElement(false);
+        }
       }
+    }
+    if (keyPress.value !== false) {
+      setKeyPress({ value: false });
     }
   }, [
     mousePosition,
@@ -530,6 +536,20 @@ const CanvasComponent = ({
     initialization,
     elementsArray,
   ]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", keyPressed);
+    const resizeCanvas = () => {
+      const canvas = canvasRef.current;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+    };
+  }, []);
 
   const handleMouseMove = (e) => {
     if (panning) {
@@ -772,25 +792,14 @@ const CanvasComponent = ({
     }
   };
   const keyPressed = (e) => {
-    if (active === "edit" || active === "draw") {
-      setKeyPress({ value: e.key });
-    }
+    setKeyPress({ value: e.key });
+  };
+  const onKeyUp = (e) => {
+    console.log("hi");
+    setKeyPress({ value: false });
   };
 
   // resize canvas
-  useEffect(() => {
-    window.addEventListener("keydown", keyPressed);
-    const resizeCanvas = () => {
-      const canvas = canvasRef.current;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-    };
-  }, []);
 
   useEffect(() => {
     setInitialization(true);
@@ -802,10 +811,10 @@ const CanvasComponent = ({
       onMouseMove={handleMouseMove}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onKeyDown={keyPressed}
       onTouchMove={onTouchMove}
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
+      onKeyDown={keyPressed}
       style={{
         cursor: cursorStyle,
       }}

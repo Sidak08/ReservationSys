@@ -55,23 +55,26 @@
     margin: 10px 0px 10px 0px;
     border-radius: 3px;
 }
-#homeReserveTimeSlotDivBox {
-    margin: -10px;
+.homeReserveTimeSlotDivBox {
+    margin: 0px -10px -10px -10px;
     max-height: 150px;
     overflow: auto;
     scrollbar-width: 10px;
     scroll-padding: 20px;
     width: 100%;
 }
+.homeReserveTimeSlotDivBox > div:nth-child(1) {
+    margin-top: 0px;
+}
 /* Define scrollbar styles */
-#homeReserveTimeSlotDivBox::-webkit-scrollbar {
+.homeReserveTimeSlotDivBox::-webkit-scrollbar {
     width: 10px; /* Set scrollbar width */
     background-color: #212121;
     border-radius: 10px;
 }
 
 /* Define scrollbar thumb styles */
-#homeReserveTimeSlotDivBox::-webkit-scrollbar-thumb {
+.homeReserveTimeSlotDivBox::-webkit-scrollbar-thumb {
     background-color: #3b3939; /* Set thumb color */
     border-radius: 10px;
 }
@@ -180,4 +183,59 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 .green {
     background-color: green;
+}
+.upComingReserveDiv {
+    width: 370px;
+    position: absolute;
+    bottom: calc(45px + 1%);
+    min-height: calc(40% - 45px);
+    right: 11px;
+    border-radius: 10px;
+    background: rgba(27, 26, 26, 0.83);
+    backdrop-filter: blur(5.9px);
+    -webkit-backdrop-filter: blur(5.9px);
+    border: 1px solid rgba(27, 26, 26, 0.88);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    transform: translateX(390px);
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-evenly; */
+    align-items: center;
+}
+
+.upComingReserveDiv.animate {
+    width: 370px;
+    opacity: 1;
+    transform: translateX(0px);
+}
+.upComingReserveDiv > h4 {
+    font-weight: 600;
+    color: white;
+    font-size: 24px;
+    margin: 10px 0px 0px 0px;
+}
+.upComingRervationDiv {
+    margin: 5px -10px -10px -10px;
+    max-height: 210px;
+    overflow: auto;
+    scrollbar-width: 10px;
+    scroll-padding: 20px;
+    width: 100%;
+}
+.upComingRervationDiv > div:nth-child(1) {
+    margin-top: 0px;
+}
+
+/* Define scrollbar styles */
+.upComingRervationDiv::-webkit-scrollbar {
+    width: 10px; /* Set scrollbar width */
+    background-color: #212121;
+    border-radius: 10px;
+}
+
+/* Define scrollbar thumb styles */
+.upComingRervationDiv::-webkit-scrollbar-thumb {
+    background-color: #3b3939; /* Set thumb color */
+    border-radius: 10px;
 }
