@@ -149,39 +149,92 @@ const BookSpot = ({
   const [bookTime, setBookTime] = useState(time);
   const [spotAvailabe, setSpotAvailble] = useState(false);
 
+  // const checkAvailability = (bookTime, bookDate, bookEndTime, bookEndDate) => {
+  //   console.log(elementsArray[activeElement].reservation);
+  //   bookTime =
+  //     parseInt(bookTime.split(":")[0]) * 60 + parseInt(bookTime.split(":")[1]);
+  //   bookEndTime =
+  //     parseInt(bookEndTime.split(":")[0]) * 60 +
+  //     parseInt(bookEndTime.split(":")[1]);
+
+  //   for (let i = 0; i < elementsArray[activeElement].reservation.length; i++) {
+  //     const element = elementsArray[activeElement].reservation[i];
+
+  //     const elementStartTime =
+  //       parseInt(element.startTime.split(":")[0]) * 60 +
+  //       parseInt(element.startTime.split(":")[1]);
+  //     const elementEndTime =
+  //       parseInt(element.endTime.split(":")[0]) * 60 +
+  //       parseInt(element.endTime.split(":")[1]);
+
+  //     if (element.startDate !== element.endDate) {
+  //       if (bookDate === element.startDate) {
+  //         if (
+  //           (bookTime >= elementStartTime && bookTime < elementEndTime) ||
+  //           (bookEndTime > elementStartTime && bookEndTime <= elementEndTime) ||
+  //           (bookTime < elementStartTime && bookEndTime > elementEndTime)
+  //         ) {
+  //           return false;
+  //         }
+  //       }
+  //       if (bookDate === element.endDate) {
+  //       }
+  //     }
+
+  //     if (bookDate === element.startDate) {
+  //       if (
+  //         (bookTime >= elementStartTime && bookTime < elementEndTime) ||
+  //         (bookEndTime > elementStartTime && bookEndTime <= elementEndTime) ||
+  //         (bookTime < elementStartTime && bookEndTime > elementEndTime)
+  //       ) {
+  //         return false;
+  //       }
+  //     }
+  //   }
+
+  //   return true;
+  // };
+
+  const changeDateIntoMinutes = (date) => {
+    const year = parseInt(date.split("-")[0] * 365 * 24 * 60);
+    const month = parseInt(date.split("-")[1] * 30 * 24 * 60);
+    const day = parseInt(date.split("-")[2] * 24 * 60);
+    console.log(year, month, day);
+    return year + month + day;
+  };
+
   const checkAvailability = (bookTime, bookDate, bookEndTime, bookEndDate) => {
     bookTime =
-      parseInt(bookTime.split(":")[0]) * 60 + parseInt(bookTime.split(":")[1]);
+      parseInt(bookTime.split(":")[0]) * 60 +
+      parseInt(bookTime.split(":")[1]) +
+      changeDateIntoMinutes(bookDate);
     bookEndTime =
       parseInt(bookEndTime.split(":")[0]) * 60 +
-      parseInt(bookEndTime.split(":")[1]);
+      parseInt(bookEndTime.split(":")[1]) +
+      changeDateIntoMinutes(bookEndDate);
 
     for (let i = 0; i < elementsArray[activeElement].reservation.length; i++) {
       const element = elementsArray[activeElement].reservation[i];
 
       const elementStartTime =
         parseInt(element.startTime.split(":")[0]) * 60 +
-        parseInt(element.startTime.split(":")[1]);
+        parseInt(element.startTime.split(":")[1]) +
+        changeDateIntoMinutes(element.startDate);
       const elementEndTime =
         parseInt(element.endTime.split(":")[0]) * 60 +
-        parseInt(element.endTime.split(":")[1]);
+        parseInt(element.endTime.split(":")[1]) +
+        changeDateIntoMinutes(element.endDate);
 
-      if (bookDate === element.startDate) {
-        if (
-          (bookTime >= elementStartTime && bookTime < elementEndTime) ||
-          (bookEndTime > elementStartTime && bookEndTime <= elementEndTime) ||
-          (bookTime < elementStartTime && bookEndTime > elementEndTime)
-        ) {
-          return false;
-        }
-      } else if (
-        bookDate < element.endDate &&
-        bookEndDate > element.startDate
+      console.log(bookTime, bookEndTime, elementStartTime, elementEndTime);
+      if (
+        (bookTime >= elementStartTime && bookTime <= elementEndTime) ||
+        (bookEndTime >= elementStartTime && bookEndTime <= elementEndTime)
       ) {
-        // If booking spans across multiple days, and the element's reservation also spans across the booked dates
         return false;
       }
     }
+    //0952 1072 1572 1692
+    // 1064001572
 
     return true;
   };
