@@ -516,7 +516,6 @@ const CanvasComponent = ({
       );
     }
     if (active === "edit") {
-      console.log(keyPress.value);
       if (keyPress.value === "Backspace") {
         if (activeElement !== false) {
           setKeyPress({ value: false });
@@ -793,10 +792,6 @@ const CanvasComponent = ({
   };
   const keyPressed = (e) => {
     setKeyPress({ value: e.key });
-  };
-  const onKeyUp = (e) => {
-    console.log("hi");
-    setKeyPress({ value: false });
   };
 
   // resize canvas

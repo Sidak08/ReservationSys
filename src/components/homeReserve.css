@@ -187,14 +187,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .upComingReserveDiv {
     width: 370px;
     position: absolute;
-    bottom: calc(45px + 1%);
-    min-height: calc(40% - 45px);
+    bottom: calc(45px + 2%);
+    max-height: calc(40% - 50px);
     right: 11px;
     border-radius: 10px;
     background: rgba(27, 26, 26, 0.83);
     backdrop-filter: blur(5.9px);
     -webkit-backdrop-filter: blur(5.9px);
-    border: 1px solid rgba(27, 26, 26, 0.88);
+    border: none !important;
     opacity: 0;
     transition: all 0.5s ease-in-out;
     transform: translateX(390px);
@@ -205,6 +205,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .upComingReserveDiv.animate {
+    border: 1px solid rgba(27, 26, 26, 0.88);
     width: 370px;
     opacity: 1;
     transform: translateX(0px);
@@ -216,12 +217,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     margin: 10px 0px 0px 0px;
 }
 .upComingRervationDiv {
-    margin: 5px -10px -10px -10px;
-    max-height: 210px;
+    margin: 5px -10px 10px -10px;
     overflow: auto;
     scrollbar-width: 10px;
     scroll-padding: 20px;
     width: 100%;
+    /* padding-bottom: 2%; */
 }
 .upComingRervationDiv > div:nth-child(1) {
     margin-top: 0px;

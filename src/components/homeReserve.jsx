@@ -33,8 +33,11 @@ const HomeReserve = ({
   }, [activeElement, activeNav]);
 
   useEffect(() => {
-    setUpComingReserveAni(activeNav === "home");
-  }, [activeElement, activeNav]);
+    if (activeNav === "home" && upComingReservations.length > 0) {
+      setUpComingReserveAni(true);
+    }
+    console.log(activeNav === "home", upComingReservations.length);
+  }, [upComingReservations, activeNav, forceRerender]);
 
   if (
     lastActiveElement !== false &&
@@ -63,9 +66,10 @@ const HomeReserve = ({
         <div
           className={`upComingReserveDiv ${upComingReserveAni ? "animate" : ""}`}
         >
-          <h4 id="upComingReserveTxt">Upcoming Reservations</h4>
-          <div className="homeReserveLine" />
-          <UpcomingReservations info={upComingReservations} />
+          <UpcomingReservations
+            info={upComingReservations}
+            setUpComingReserveAni={setUpComingReserveAni}
+          />
         </div>
       </>
     );
@@ -78,9 +82,10 @@ const HomeReserve = ({
         <div
           className={`upComingReserveDiv ${upComingReserveAni ? "animate" : ""}`}
         >
-          <h4 id="upComingReserveTxt">Upcoming Reservations</h4>
-          <div className="homeReserveLine" />
-          <UpcomingReservations info={upComingReservations} />
+          <UpcomingReservations
+            info={upComingReservations}
+            setUpComingReserveAni={setUpComingReserveAni}
+          />
         </div>
       </>
     );
@@ -149,57 +154,10 @@ const BookSpot = ({
   const [bookTime, setBookTime] = useState(time);
   const [spotAvailabe, setSpotAvailble] = useState(false);
 
-  // const checkAvailability = (bookTime, bookDate, bookEndTime, bookEndDate) => {
-  //   console.log(elementsArray[activeElement].reservation);
-  //   bookTime =
-  //     parseInt(bookTime.split(":")[0]) * 60 + parseInt(bookTime.split(":")[1]);
-  //   bookEndTime =
-  //     parseInt(bookEndTime.split(":")[0]) * 60 +
-  //     parseInt(bookEndTime.split(":")[1]);
-
-  //   for (let i = 0; i < elementsArray[activeElement].reservation.length; i++) {
-  //     const element = elementsArray[activeElement].reservation[i];
-
-  //     const elementStartTime =
-  //       parseInt(element.startTime.split(":")[0]) * 60 +
-  //       parseInt(element.startTime.split(":")[1]);
-  //     const elementEndTime =
-  //       parseInt(element.endTime.split(":")[0]) * 60 +
-  //       parseInt(element.endTime.split(":")[1]);
-
-  //     if (element.startDate !== element.endDate) {
-  //       if (bookDate === element.startDate) {
-  //         if (
-  //           (bookTime >= elementStartTime && bookTime < elementEndTime) ||
-  //           (bookEndTime > elementStartTime && bookEndTime <= elementEndTime) ||
-  //           (bookTime < elementStartTime && bookEndTime > elementEndTime)
-  //         ) {
-  //           return false;
-  //         }
-  //       }
-  //       if (bookDate === element.endDate) {
-  //       }
-  //     }
-
-  //     if (bookDate === element.startDate) {
-  //       if (
-  //         (bookTime >= elementStartTime && bookTime < elementEndTime) ||
-  //         (bookEndTime > elementStartTime && bookEndTime <= elementEndTime) ||
-  //         (bookTime < elementStartTime && bookEndTime > elementEndTime)
-  //       ) {
-  //         return false;
-  //       }
-  //     }
-  //   }
-
-  //   return true;
-  // };
-
   const changeDateIntoMinutes = (date) => {
     const year = parseInt(date.split("-")[0] * 365 * 24 * 60);
     const month = parseInt(date.split("-")[1] * 30 * 24 * 60);
     const day = parseInt(date.split("-")[2] * 24 * 60);
-    console.log(year, month, day);
     return year + month + day;
   };
 
@@ -225,7 +183,6 @@ const BookSpot = ({
         parseInt(element.endTime.split(":")[1]) +
         changeDateIntoMinutes(element.endDate);
 
-      console.log(bookTime, bookEndTime, elementStartTime, elementEndTime);
       if (
         (bookTime >= elementStartTime && bookTime <= elementEndTime) ||
         (bookEndTime >= elementStartTime && bookEndTime <= elementEndTime)
@@ -420,24 +377,31 @@ const BookSpot = ({
   );
 };
 
-const UpcomingReservations = ({ info }) => {
+const UpcomingReservations = ({ info, setUpComingReserveAni }) => {
+  if (info.length < 1) {
+    // setUpComingReserveAni(false);
+  }
   return (
-    <div className="upComingRervationDiv">
-      {info.map((reservationItem, index) => (
-        <TimeSlotDiv
-          key={index}
-          info={{
-            startTime: reservationItem.startTime,
-            endTime: reservationItem.endTime,
-            color: "red",
-            status: "busy",
-            tableNum: 3,
-            startDate: reservationItem.startDate,
-            endDate: reservationItem.endDate,
-          }}
-        />
-      ))}
-    </div>
+    <>
+      <h4 id="upComingReserveTxt">Upcoming Reservations</h4>
+      <div className="homeReserveLine" />
+      <div className="upComingRervationDiv">
+        {info.map((reservationItem, index) => (
+          <TimeSlotDiv
+            key={index}
+            info={{
+              startTime: reservationItem.startTime,
+              endTime: reservationItem.endTime,
+              color: "red",
+              status: "busy",
+              tableNum: 3,
+              startDate: reservationItem.startDate,
+              endDate: reservationItem.endDate,
+            }}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 
