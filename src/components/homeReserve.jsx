@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import BookInfo from "./homeReserveBookInfo";
 import BookSpot from "./homeReserveBookSpot";
 
+// ON DELETE RMOVE THE UPCOMING RESERVATIONS
+
 const HomeReserve = ({
   activeElement,
   activeNav,
@@ -24,14 +26,20 @@ const HomeReserve = ({
     email: [],
     notes: [],
   });
-  const renderBookInfo = useState(false);
+  const [renderBookInfo, setRenderBookInfo] = useState(false);
+  const [borderRed, setBorderRed] = useState(false);
 
   useEffect(() => {
-    setAnimationActive(
+    if (
       activeElement !== false &&
-        activeNav === "home" &&
-        elementsArray.length > 0,
-    );
+      activeNav === "home" &&
+      elementsArray.length > 0
+    ) {
+      setAnimationActive(true);
+    } else {
+      setAnimationActive(false);
+      setRenderBookInfo(false);
+    }
   }, [activeElement, activeNav]);
 
   useEffect(() => {
@@ -72,6 +80,10 @@ const HomeReserve = ({
             setForceRerender={setForceRerender}
             bookLength={bookLength}
             bookingInfo={bookingInfo}
+            renderBookInfo={renderBookInfo}
+            setRenderBookInfo={setRenderBookInfo}
+            setBorderRed={setBorderRed}
+            borderRed={borderRed}
           />
         </div>
         <div
@@ -82,7 +94,14 @@ const HomeReserve = ({
             setUpComingReserveAni={setUpComingReserveAni}
           />
         </div>
-        <BookInfo info={BookInfo} renderBookInfo={renderBookInfo} />
+        <BookInfo
+          info={BookInfo}
+          renderBookInfo={renderBookInfo}
+          setRenderBookInfo={setRenderBookInfo}
+          activeNav={activeNav}
+          setBorderRed={setBorderRed}
+          borderRed={borderRed}
+        />
       </>
     );
   } else {
@@ -99,6 +118,14 @@ const HomeReserve = ({
             setUpComingReserveAni={setUpComingReserveAni}
           />
         </div>
+        <BookInfo
+          info={BookInfo}
+          renderBookInfo={renderBookInfo}
+          setRenderBookInfo={setRenderBookInfo}
+          activeNav={activeNav}
+          setBorderRed={setBorderRed}
+          borderRed={borderRed}
+        />
       </>
     );
   }
@@ -127,7 +154,7 @@ const StatusDiv = ({ info }) => {
 
 const TimeSlotDiv = ({ info }) => {
   return (
-    <div className="timeSlotDiv">
+    <button className="timeSlotDiv">
       <h4>
         {info.startTime} - {info.endTime}
       </h4>
@@ -143,7 +170,7 @@ const TimeSlotDiv = ({ info }) => {
         />
         <h4> {info.status} </h4>
       </div>
-    </div>
+    </button>
   );
 };
 

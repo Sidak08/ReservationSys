@@ -1,0 +1,38 @@
+.homeReserveBookInfo {
+    min-height: 350px;
+    width: 360px;
+    position: absolute;
+    top: calc((8% - 35px) / 2);
+    right: 400px;
+    border-radius: 10px;
+    background: rgba(27, 26, 26, 0.83);
+    backdrop-filter: blur(5.9px);
+    -webkit-backdrop-filter: blur(5.9px);
+    border: 1px solid rgba(27, 26, 26, 0.88);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    transform: translateY(-390px);
+}
+.homeReserveBookInfo.animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+.redBorder {
+    transition: all 0.2s ease-in-out;
+    border: 1px solid red;
+}
+.BookInfoClose {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    background-color: red;
+    border: 10px solid #0d0d0d;
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}

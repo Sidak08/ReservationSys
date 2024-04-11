@@ -9,6 +9,10 @@ const BookSpot = ({
   setForceRerender,
   bookLength,
   bookingInfo,
+  renderBookInfo,
+  setRenderBookInfo,
+  setBorderRed,
+  borderRed,
 }) => {
   const today = new Date();
   const day = String(today.getDate()).padStart(2, "0");
@@ -183,6 +187,15 @@ const BookSpot = ({
       bookLength,
     );
     if (checkAvailability(bookTime, bookDate, endTime, endDate)) {
+      if (renderBookInfo === false) {
+        setRenderBookInfo(true);
+        setBorderRed(true);
+        return;
+      }
+      if (renderBookInfo === true) {
+        setRenderBookInfo(false);
+        setBorderRed(false);
+      }
       const { endTime, endDate } = calculateEndTime(
         bookTime,
         bookDate,
