@@ -13,15 +13,19 @@ const BookSpot = ({
   setRenderBookInfo,
   setBorderRed,
   borderRed,
+  bookDate,
+  bookTime,
+  setBookDate,
+  setBookTime,
+  numName,
+  setNumName,
+  numEmail,
+  setNumEmail,
+  numPhone,
+  setNumPhone,
+  numNotes,
+  setNumNotes,
 }) => {
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const year = today.getFullYear();
-  const time = `${String(today.getHours()).padStart(2, "0")}:${String(today.getMinutes()).padStart(2, "0")}`;
-
-  const [bookDate, setBookDate] = useState(`${year}-${month}-${day}`);
-  const [bookTime, setBookTime] = useState(time);
   const [spotAvailabe, setSpotAvailble] = useState(false);
 
   const changeDateIntoMinutes = (date) => {
@@ -187,6 +191,16 @@ const BookSpot = ({
       bookLength,
     );
     if (checkAvailability(bookTime, bookDate, endTime, endDate)) {
+      let name = [];
+      let email = [];
+      let phone = [];
+      let notes = [];
+
+      setNumName(1);
+      setNumEmail(1);
+      setNumPhone(1);
+      setNumNotes(1);
+
       if (renderBookInfo === false) {
         setRenderBookInfo(true);
         setBorderRed(true);
@@ -195,6 +209,10 @@ const BookSpot = ({
       if (renderBookInfo === true) {
         setRenderBookInfo(false);
         setBorderRed(false);
+        name = bookingInfo.name;
+        email = bookingInfo.email;
+        phone = bookingInfo.phone;
+        notes = bookingInfo.notes;
       }
       const { endTime, endDate } = calculateEndTime(
         bookTime,
@@ -202,26 +220,29 @@ const BookSpot = ({
         bookLength,
       );
       elementsArray[activeElement].reservation.push({
-        name: "anon",
-        number: "876 887 7777",
+        name: name,
+        number: phone,
+        email: email,
+        notes: notes,
         startTime: bookTime,
         endTime: endTime,
         startDate: bookDate,
         endDate: endDate,
         people: 7,
-        email: "spam@gmail.com",
       });
       upComingReservations.push({
-        name: "anon",
-        number: "876 887 7777",
+        name: name,
+        number: phone,
+        email: email,
+        notes: notes,
         startTime: bookTime,
         endTime: endTime,
         startDate: bookDate,
         endDate: endDate,
         people: 7,
-        email: "spam@gmail.com",
       });
       setSpotAvailble(false);
+      console.log(elementsArray[activeElement].reservation);
     }
   };
 

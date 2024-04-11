@@ -230,7 +230,7 @@ const CloseSvg = () => {
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="3"
+      strokeWidth="2"
       className="feather feather-x"
       viewBox="0 0 24 24"
     >

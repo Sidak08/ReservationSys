@@ -28,6 +28,19 @@ const HomeReserve = ({
   });
   const [renderBookInfo, setRenderBookInfo] = useState(false);
   const [borderRed, setBorderRed] = useState(false);
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const year = today.getFullYear();
+  const time = `${String(today.getHours()).padStart(2, "0")}:${String(today.getMinutes()).padStart(2, "0")}`;
+
+  const [bookDate, setBookDate] = useState(`${year}-${month}-${day}`);
+  const [bookTime, setBookTime] = useState(time);
+
+  const [numName, setNumName] = useState(1);
+  const [numEmail, setNumEmail] = useState(1);
+  const [numPhone, setNumPhone] = useState(1);
+  const [numNotes, setNumNotes] = useState(1);
 
   useEffect(() => {
     if (
@@ -84,6 +97,18 @@ const HomeReserve = ({
             setRenderBookInfo={setRenderBookInfo}
             setBorderRed={setBorderRed}
             borderRed={borderRed}
+            bookDate={bookDate}
+            setBookDate={setBookDate}
+            bookTime={bookTime}
+            setBookTime={setBookTime}
+            numName={numName}
+            setNumName={setNumName}
+            numEmail={numEmail}
+            setNumEmail={setNumEmail}
+            numPhone={numPhone}
+            setNumPhone={setNumPhone}
+            numNotes={numNotes}
+            setNumNotes={setNumNotes}
           />
         </div>
         <div
@@ -95,12 +120,22 @@ const HomeReserve = ({
           />
         </div>
         <BookInfo
-          info={BookInfo}
+          info={bookingInfo}
           renderBookInfo={renderBookInfo}
           setRenderBookInfo={setRenderBookInfo}
           activeNav={activeNav}
           setBorderRed={setBorderRed}
           borderRed={borderRed}
+          bookDate={bookDate}
+          bookTime={bookTime}
+          numName={numName}
+          setNumName={setNumName}
+          numEmail={numEmail}
+          setNumEmail={setNumEmail}
+          numPhone={numPhone}
+          setNumPhone={setNumPhone}
+          numNotes={numNotes}
+          setNumNotes={setNumNotes}
         />
       </>
     );
@@ -125,6 +160,16 @@ const HomeReserve = ({
           activeNav={activeNav}
           setBorderRed={setBorderRed}
           borderRed={borderRed}
+          bookDate={bookDate}
+          bookTime={bookTime}
+          numName={numName}
+          setNumName={setNumName}
+          numEmail={numEmail}
+          setNumEmail={setNumEmail}
+          numPhone={numPhone}
+          setNumPhone={setNumPhone}
+          numNotes={numNotes}
+          setNumNotes={setNumNotes}
         />
       </>
     );
