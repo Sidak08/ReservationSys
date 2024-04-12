@@ -25,6 +25,7 @@ const HomeReserve = ({
     phone: [],
     email: [],
     notes: [],
+    people: 1,
   });
   const [renderBookInfo, setRenderBookInfo] = useState(false);
   const [borderRed, setBorderRed] = useState(false);
@@ -190,6 +191,11 @@ const StatusDiv = ({ info }) => {
             tableNum: 3,
             startDate: reservationItem.startDate,
             endDate: reservationItem.endDate,
+            people: reservationItem.people,
+            name: reservationItem.name,
+            email: reservationItem.email,
+            phone: reservationItem.phone,
+            notes: reservationItem.notes,
           }}
         />
       ))}
@@ -198,8 +204,11 @@ const StatusDiv = ({ info }) => {
 };
 
 const TimeSlotDiv = ({ info }) => {
+  const handleClick = () => {
+    console.log(info);
+  };
   return (
-    <button className="timeSlotDiv">
+    <button className="timeSlotDiv" onClick={handleClick}>
       <h4>
         {info.startTime} - {info.endTime}
       </h4>
@@ -220,9 +229,6 @@ const TimeSlotDiv = ({ info }) => {
 };
 
 const UpcomingReservations = ({ info, setUpComingReserveAni }) => {
-  if (info.length < 1) {
-    // setUpComingReserveAni(false);
-  }
   return (
     <>
       <h4 id="upComingReserveTxt">Upcoming Reservations</h4>
@@ -239,6 +245,11 @@ const UpcomingReservations = ({ info, setUpComingReserveAni }) => {
               tableNum: 3,
               startDate: reservationItem.startDate,
               endDate: reservationItem.endDate,
+              people: reservationItem.people,
+              name: reservationItem.name,
+              email: reservationItem.email,
+              phone: reservationItem.phone,
+              notes: reservationItem.notes,
             }}
           />
         ))}

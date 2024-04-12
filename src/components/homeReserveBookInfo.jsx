@@ -38,6 +38,11 @@ const BookInfo = ({
     }
   }, [borderRed]);
 
+  const handleNumPeopleChange = (e) => {
+    const input = e.target.value;
+    info.people = parseInt(input);
+  };
+
   return (
     <div
       className={`homeReserveBookInfo ${animate ? "animate" : ""} ${borderRed ? "redBorder" : ""}`}
@@ -79,6 +84,10 @@ const BookInfo = ({
         info={info}
         heading="Notes"
       />
+      <div>
+        <h4> Number Of People </h4>
+        <input onChange={handleNumPeopleChange} />
+      </div>
     </div>
   );
 };

@@ -195,6 +195,7 @@ const BookSpot = ({
       let email = [];
       let phone = [];
       let notes = [];
+      let people = 1;
 
       setNumName(1);
       setNumEmail(1);
@@ -213,6 +214,7 @@ const BookSpot = ({
         email = bookingInfo.email;
         phone = bookingInfo.phone;
         notes = bookingInfo.notes;
+        people = bookingInfo.people;
       }
       const { endTime, endDate } = calculateEndTime(
         bookTime,
@@ -220,26 +222,26 @@ const BookSpot = ({
         bookLength,
       );
       elementsArray[activeElement].reservation.push({
-        name: name,
-        number: phone,
-        email: email,
-        notes: notes,
+        name: Array.from(name),
+        number: Array.from(phone),
+        email: Array.from(email),
+        notes: Array.from(notes),
         startTime: bookTime,
         endTime: endTime,
         startDate: bookDate,
         endDate: endDate,
-        people: 7,
+        people: people,
       });
       upComingReservations.push({
-        name: name,
-        number: phone,
-        email: email,
-        notes: notes,
+        name: Array.from(name),
+        number: Array.from(phone),
+        email: Array.from(email),
+        notes: Array.from(notes),
         startTime: bookTime,
         endTime: endTime,
         startDate: bookDate,
         endDate: endDate,
-        people: 7,
+        people: people,
       });
       setSpotAvailble(false);
       console.log(elementsArray[activeElement].reservation);
