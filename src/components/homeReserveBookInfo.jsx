@@ -84,7 +84,7 @@ const BookInfo = ({
         info={info}
         heading="Notes"
       />
-      <div>
+      <div id="homeReserveBookInfoPeopleInput">
         <h4> Number Of People </h4>
         <input onChange={handleNumPeopleChange} />
       </div>

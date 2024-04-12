@@ -121,3 +121,24 @@ input:focus {
     border: none;
     outline: none;
 }
+#homeReserveBookInfoPeopleInput {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 75%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    color: white;
+}
+#homeReserveBookInfoPeopleInput > h4 {
+    font-weight: 300;
+}
+#homeReserveBookInfoPeopleInput > input {
+    width: 50px;
+    height: 30px;
+    background-color: #313131;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}
