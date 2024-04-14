@@ -135,7 +135,7 @@ const BookSpot = ({
           // Remove the duplicate last reservation
           activeReservation.splice(lastReservationIndex + 1, 1);
           // Trigger re-render by toggling the forceRerender state
-          setForceRerender((prev) => !prev);
+          setForceRerender(forceRerender + 1);
           elementsArray[activeElement].reservation = activeReservation;
           break; // Exit the loop after inserting the reservation
         }
@@ -167,7 +167,7 @@ const BookSpot = ({
           // Remove the duplicate last reservation
           activeReservation.splice(lastReservationIndex + 1, 1);
           // Trigger re-render by toggling the forceRerender state
-          setForceRerender((prev) => !prev);
+          // setForceRerender(forceRerender + 1); lol i have no clue why this suddenly broke but it seems unseary now
           upComingReservations = activeReservation;
           break; // Exit the loop after inserting the reservation
         }
@@ -242,9 +242,9 @@ const BookSpot = ({
         startDate: bookDate,
         endDate: endDate,
         people: people,
+        tableId: elementsArray[activeElement].id,
       });
       setSpotAvailble(false);
-      console.log(elementsArray[activeElement].reservation);
     }
   };
 

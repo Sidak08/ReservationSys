@@ -240,3 +240,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     background-color: #3b3939; /* Set thumb color */
     border-radius: 10px;
 }
+button {
+    border: none;
+}
+.selectedBorder {
+    border: 2px solid #3f12d7;
+}

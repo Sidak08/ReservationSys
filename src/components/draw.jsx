@@ -132,6 +132,16 @@ const CanvasComponent = ({
   const [movingObject, setMovingObject] = useState(false);
   const [movingLinesArrayPoint, setMovingLinesArrayPoint] = useState(false);
 
+  const genrateId = (ary) => {
+    const randomNum = Math.floor(Math.random() * 1000000);
+    for (let i = 0; i < ary.length; i++) {
+      if (randomNum === ary[i].id) {
+        genrateId(ary);
+      }
+    }
+    return randomNum;
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -724,8 +734,10 @@ const CanvasComponent = ({
           reSize: false,
           title: hoverImage.title,
           reservation: [],
+          id: genrateId(elementsArray),
         });
         setSelectedElement(false);
+        console.log(elementsArray);
       }
 
       for (let i = 0; i < elementsArray.length; i++) {
