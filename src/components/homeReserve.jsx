@@ -2,6 +2,7 @@ import "./homeReserve.css";
 import { useEffect, useState } from "react";
 import BookInfo from "./homeReserveBookInfo";
 import BookSpot from "./homeReserveBookSpot";
+import BookShowInfo from "./homeReserveBookShowInfo";
 
 // ON DELETE RMOVE THE UPCOMING RESERVATIONS
 
@@ -147,6 +148,11 @@ const HomeReserve = ({
           numNotes={numNotes}
           setNumNotes={setNumNotes}
         />
+        <BookShowInfo
+          activeRsvp={activeRsvp}
+          setActiveRsvp={setActiveRsvp}
+          activeNav={activeNav}
+        />
       </>
     );
   } else {
@@ -182,6 +188,11 @@ const HomeReserve = ({
           setNumPhone={setNumPhone}
           numNotes={numNotes}
           setNumNotes={setNumNotes}
+        />
+        <BookShowInfo
+          activeRsvp={activeRsvp}
+          setActiveRsvp={setActiveRsvp}
+          activeNav={activeNav}
         />
       </>
     );
@@ -221,7 +232,6 @@ const TimeSlotDiv = ({ info, activeRsvp, setActiveRsvp }) => {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    console.log(activeRsvp.id, info.id);
     if (
       activeRsvp.startTime === info.startTime &&
       activeRsvp.endTime === info.endTime &&

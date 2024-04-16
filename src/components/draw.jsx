@@ -737,7 +737,6 @@ const CanvasComponent = ({
           id: genrateId(elementsArray),
         });
         setSelectedElement(false);
-        console.log(elementsArray);
       }
 
       for (let i = 0; i < elementsArray.length; i++) {

@@ -1,0 +1,121 @@
+.bookShowInfo {
+    /* min-height: 350px; */
+    width: 400px;
+    position: absolute;
+    top: -400px;
+    right: 400px;
+    border-radius: 10px;
+    background: rgba(27, 26, 26, 0.83);
+    backdrop-filter: blur(5.9px);
+    -webkit-backdrop-filter: blur(5.9px);
+    border: 1px solid rgba(27, 26, 26, 0.88);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    transform: translateY(0px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+.bookShowInfo.animate {
+    opacity: 1;
+    transform: translateY(410px);
+}
+.bookShowInfoHeader {
+    display: flex;
+    justify-content: space-evenly;
+    width: 280px;
+    margin-top: 10px;
+    flex-direction: row;
+    align-items: center;
+}
+.bookShowInfoHeader h1 {
+    font-size: 26px;
+    font-weight: 400;
+    margin-left: -55px;
+}
+.bookShowInfoHeader > div {
+    width: 250px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    align-items: center;
+    margin-right: -55px;
+    padding-top: 8px;
+}
+.bookShowInfoHeader h4 {
+    font-size: 18px;
+    font-weight: 300;
+}
+.showBookInfoClose {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    background-color: red;
+    border: 10px solid #0d0d0d;
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+.homeReserveShowInfoThinLine {
+    height: 3px;
+    color: white;
+    border-radius: 3px;
+    width: 100%;
+    background-color: white;
+}
+.bookShowInfoBoxDiv {
+    width: 80%;
+    margin-bottom: 8px;
+}
+.bookShowInfoBoxDiv > h4 {
+    margin-left: -15px;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+.bookShowInfoBoxText {
+    background-color: #313131;
+    min-width: fit-content;
+    padding: 5px;
+    margin: 2.5px;
+    border-radius: 3px;
+}
+.bookShowInfoBoxText:hover {
+    background-color: #4b4b4b;
+    transition: all 0.2s ease-in-out;
+}
+.bookShowInfoFlexItemBox {
+    margin-top: 2.5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.bookShowInfoNumPeopleDivFlex {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    align-items: center;
+}
+.bookShowInfoNumPeopleDiv {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-right: 8px;
+    justify-content: center;
+}
+.bookShowInfoNumPeopleDiv > h4 {
+    margin: 8px;
+}
+.bookShowInfoNumPeopleDiv > h4:nth-child(2) {
+    background-color: #313131;
+    min-width: 20px;
+    padding: 5px;
+    margin: 2.5px;
+    border-radius: 3px;
+    font-weight: 400;
+    text-align: center;
+}
