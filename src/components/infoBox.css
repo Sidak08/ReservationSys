@@ -9,22 +9,23 @@
     height: 100px;
     width: 200px;
     position: absolute;
-    right: 20px;
-    bottom: 60px;
     border-radius: 4px;
     background: rgba(27, 26, 26, 0.83);
     backdrop-filter: blur(5.9px);
     -webkit-backdrop-filter: blur(5.9px);
     border: 1px solid rgba(27, 26, 26, 0.88);
     opacity: 0;
-    transform: translateX(100px);
     transition: all 0.4s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    right: -210px;
+    bottom: 60px;
 }
 .infoBoxDiv.animate {
+    right: 20px;
+    bottom: 60px;
     opacity: 1;
     transform: translateX(0);
 }
@@ -57,4 +58,14 @@
     font-size: 15px;
     color: #fff;
     font-weight: 300;
+}
+#infoBoxDelete {
+    width: 90%;
+    height: 30px;
+    background: #ff0000;
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    font-size: 17px;
+    margin-top: 8px;
 }

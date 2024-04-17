@@ -2,7 +2,7 @@
     /* min-height: 350px; */
     width: 400px;
     position: absolute;
-    top: -400px;
+    top: -410px;
     right: 400px;
     border-radius: 10px;
     background: rgba(27, 26, 26, 0.83);
@@ -19,7 +19,7 @@
 }
 .bookShowInfo.animate {
     opacity: 1;
-    transform: translateY(410px);
+    transform: translateY(430px);
 }
 .bookShowInfoHeader {
     display: flex;

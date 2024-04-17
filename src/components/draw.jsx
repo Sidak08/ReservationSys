@@ -78,8 +78,10 @@ const Draw = () => {
       <InfoBox
         activeNav={activeNav}
         activeElement={activeElement}
+        setActiveElement={setActiveElement}
         elementsArray={elementsArray}
         resizingObject={resizingObject}
+        upComingReservations={upComingReservation}
       />
       <HomeReserve
         activeElement={activeElement}
@@ -527,11 +529,12 @@ const CanvasComponent = ({
     }
     if (active === "edit") {
       if (keyPress.value === "Backspace") {
-        if (activeElement !== false) {
-          setKeyPress({ value: false });
-          elementsArray.splice(activeElement, 1);
-          setActiveElement(false);
-        }
+        // if (activeElement !== false) {
+        //   setKeyPress({ value: false });
+        //   elementsArray.splice(activeElement, 1);
+        //   setActiveElement(false);
+        // }
+        // delete later
       }
     }
     if (keyPress.value !== false) {
@@ -541,6 +544,7 @@ const CanvasComponent = ({
     mousePosition,
     active,
     lastClick,
+    activeElement,
     keyPress,
     initialization,
     elementsArray,

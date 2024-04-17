@@ -95,6 +95,16 @@ const BookSpot = ({
     }
   };
 
+  const genrateId = () => {
+    const randomNum = Math.floor(Math.random() * 1000000);
+    for (let i = 0; i < upComingReservations.length; i++) {
+      if (randomNum === upComingReservations[i].id) {
+        genrateId();
+      }
+    }
+    return randomNum;
+  };
+
   useEffect(() => {
     const { endTime, endDate } = calculateEndTime(
       bookTime,
@@ -197,6 +207,8 @@ const BookSpot = ({
       let notes = [];
       let people = 1;
 
+      const id = genrateId();
+
       setNumName(1);
       setNumEmail(1);
       setNumPhone(1);
@@ -232,6 +244,8 @@ const BookSpot = ({
         startDate: bookDate,
         endDate: endDate,
         people: people,
+        tableId: elementsArray[activeElement].id,
+        id: id,
       });
       upComingReservations.push({
         name: Array.from(name),
@@ -245,6 +259,7 @@ const BookSpot = ({
         endDate: endDate,
         people: people,
         tableId: elementsArray[activeElement].id,
+        id: id,
       });
       setSpotAvailble(false);
     }

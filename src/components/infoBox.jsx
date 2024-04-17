@@ -4,9 +4,11 @@ import "./infoBox.css";
 
 const InfoBox = ({
   activeElement,
+  setActiveElement,
   activeNav,
   elementsArray,
   resizingObject,
+  upComingReservations,
 }) => {
   const [animationActive, setAnimationActive] = useState(false);
   const [lastActiveElement, setLastActiveElement] = useState(false);
@@ -37,6 +39,21 @@ const InfoBox = ({
     }
   }, [activeElement]);
 
+  const onDeleteClick = () => {
+    if (activeElement !== false) {
+      const rsvp = elementsArray[activeElement].reservation;
+      elementsArray.splice(activeElement, 1);
+      setActiveElement(false);
+      for (let i = 0; i < upComingReservations.length; i++) {
+        for (let j = 0; j < rsvp.length; j++) {
+          if (upComingReservations[i].id === rsvp[j].id) {
+            upComingReservations.splice(i, 1);
+          }
+        }
+      }
+    }
+  };
+
   if (
     lastActiveElement !== false &&
     activeNav === "edit" &&
@@ -56,6 +73,9 @@ const InfoBox = ({
             <h4>W: {Math.round(elementsArray[lastActiveElement].width)}</h4>
           </div>
         </div>
+        <button onClick={onDeleteClick} id="infoBoxDelete">
+          Delete
+        </button>
       </div>
     );
   } else {
@@ -73,6 +93,7 @@ const InfoBox = ({
             <h4>W: {Math.round(lastActiveElementInfo.width)}</h4>
           </div>
         </div>
+        <button id="infoBoxDelete">Delete</button>
       </div>
     );
   }
