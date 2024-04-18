@@ -18,11 +18,9 @@ const BookShowInfo = ({ activeRsvp, setActiveRsvp, activeNav }) => {
 
   useEffect(() => {
     if (activeRsvp !== false && activeNav === "home") {
-      console.log(activeRsvp);
       setAnimation(true);
     } else {
       setAnimation(false);
-      console.log(activeRsvp);
     }
   }, [activeRsvp, activeNav]);
 
@@ -65,7 +63,6 @@ const BookShowInfo = ({ activeRsvp, setActiveRsvp, activeNav }) => {
 };
 
 const BookShowInfoBox = ({ info, title }) => {
-  console.log(info, title);
   return (
     <div className="bookShowInfoBoxDiv">
       <h4>{title}</h4>
