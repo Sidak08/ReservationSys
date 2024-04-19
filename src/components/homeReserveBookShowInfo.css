@@ -99,6 +99,7 @@
     justify-content: flex-end;
     width: 100%;
     align-items: center;
+    margin-top: -7px;
 }
 .bookShowInfoNumPeopleDiv {
     display: flex;
@@ -118,4 +119,31 @@
     border-radius: 3px;
     font-weight: 400;
     text-align: center;
+}
+.bookShowInfoBtnDiv {
+    width: 400px;
+    height: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+.bookShowInfoBtnDiv button {
+    height: 30px;
+    width: 45%;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+.bookShowInfoBtnDiv > button:nth-child(1) {
+    background-color: #f48809;
+}
+.bookShowInfoBtnDiv > button:nth-child(1):active {
+    background-color: #a45900;
+}
+.bookShowInfoBtnDiv > button:nth-child(2) {
+    background-color: #ff0000;
+}
+.bookShowInfoBtnDiv > button:nth-child(2):active {
+    background-color: #9f0101;
 }

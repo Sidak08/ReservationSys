@@ -22,10 +22,12 @@
     align-items: center;
     right: -210px;
     bottom: 60px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .infoBoxDiv.animate {
-    right: 20px;
-    bottom: 60px;
+    right: 11px;
+    bottom: 57px;
     opacity: 1;
     transform: translateX(0);
 }

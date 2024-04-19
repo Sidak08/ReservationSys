@@ -58,6 +58,10 @@ const BookShowInfo = ({ activeRsvp, setActiveRsvp, activeNav }) => {
           <h4>{lastActiveRsvp.people}</h4>
         </div>
       </div>
+      <div className="bookShowInfoBtnDiv">
+        <button>Change</button>
+        <button>Delete</button>
+      </div>
     </div>
   );
 };
