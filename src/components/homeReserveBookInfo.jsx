@@ -38,14 +38,9 @@ const BookInfo = ({
     }
   }, [borderRed]);
 
-  useEffect(() => {
-    if (renderBookInfo === false) {
-      info.people = 0;
-    }
-  }, [renderBookInfo]);
-
   const handleNumPeopleChange = (e) => {
-    info.people = e.target.value;
+    const input = e.target.value;
+    info.people = parseInt(input);
   };
 
   return (
@@ -91,27 +86,20 @@ const BookInfo = ({
       />
       <div id="homeReserveBookInfoPeopleInput">
         <h4> Number Of People </h4>
-        <input value={info.people} onChange={handleNumPeopleChange} />
+        <input onChange={handleNumPeopleChange} />
       </div>
     </div>
   );
 };
 
 const BookInfoInputBox = ({ addCounter, count, info, heading }) => {
-  const [value, setValue] = useState({ value: "", key: 0 });
   const handleChange = (e, key) => {
-    // info[heading.toLowerCase()][key] = e.target.value;
-    console.log(info[heading.toLowerCase()]);
+    const input = e.target.value;
+    info[heading.toLowerCase()][key] = input;
   };
-  useEffect(() => {
-    // info[heading.toLowerCase()][value.key] = value.value;
-  }, [value]);
   const inputs = Array.from({ length: count }, (_, index) => (
     <input
       key={index}
-      value={(e) => {
-        setValue({ value: e.target.value, key: index });
-      }}
       className="homeReserveInputBox"
       onChange={(e) => {
         handleChange(e, index);
@@ -135,4 +123,5 @@ const BookInfoInputBox = ({ addCounter, count, info, heading }) => {
     </div>
   );
 };
+
 export default BookInfo;

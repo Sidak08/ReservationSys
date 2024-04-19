@@ -504,16 +504,24 @@ const CanvasComponent = ({
         ) {
           context.strokeStyle = "red";
           mousePosition.x = lastClick.x + offset.x;
-        }
-
-        if (
+        } else if (
           lastClick.y + offset.y - 10 <= mousePosition.y &&
           lastClick.y + offset.y + 10 >= mousePosition.y
         ) {
           context.strokeStyle = "red";
           mousePosition.y = lastClick.y + offset.y;
+        } else {
+          for (let i = 0; i < linesArray.length; i++) {
+            for (let j = 0; j < linesArray[i].length; j++) {
+              if (
+                linesArray[i][j].x !== false &&
+                isNearPoint(mousePosition, linesArray[i][j], 10)
+              ) {
+                setMousePosition(linesArray[i][j]);
+              }
+            }
+          }
         }
-
         context.lineTo(mousePosition.x, mousePosition.y);
         context.stroke();
       }
@@ -718,12 +726,12 @@ const CanvasComponent = ({
     }
     if (active === "draw") {
       setLastClick({
-        x: clientX - offset.x,
-        y: clientY - offset.y,
+        x: mousePosition.x - offset.x,
+        y: mousePosition.y  - offset.y,
       });
       linesArray[linesArray.length - 1].push({
-        x: clientX - offset.x,
-        y: clientY - offset.y,
+        x: mousePosition.x - offset.x,
+        y: mousePosition.y - offset.y,
       });
     }
     if (active === "edit") {
