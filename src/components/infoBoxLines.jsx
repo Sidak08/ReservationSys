@@ -7,7 +7,6 @@ const InfoBoxLines = ({ movingLinesArrayPoint, activeNav, linesArray }) => {
 
   useEffect(() => {
     if (movingLinesArrayPoint !== false && activeNav === "edit") {
-      console.log(movingLinesArrayPoint);
       setAnimationActive(true);
     } else {
       setAnimationActive(false);
@@ -22,6 +21,7 @@ const InfoBoxLines = ({ movingLinesArrayPoint, activeNav, linesArray }) => {
 
   const onDeleteClick = () => {
     if (movingLinesArrayPoint !== false) {
+      console.log(movingLinesArrayPoint);
       const dot =
         linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j]
           .reservation;

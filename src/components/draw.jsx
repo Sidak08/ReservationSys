@@ -539,7 +539,10 @@ const CanvasComponent = ({
                 linesArray[i][j].x !== false &&
                 isNearPoint(mousePosition, linesArray[i][j], 10)
               ) {
-                setMousePosition(linesArray[i][j]);
+                setMousePosition({
+                  x: linesArray[i][j].x + offset.x,
+                  y: linesArray[i][j].y + offset.y,
+                });
               }
             }
           }
