@@ -14,6 +14,7 @@ import BottomBar from "./bottomBar";
 import EditLayout from "./editLayot";
 import InfoBox from "./infoBox";
 import HomeReserve from "./homeReserve";
+import InfoBoxLines from "./infoBoxLines";
 
 const Draw = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -33,6 +34,7 @@ const Draw = () => {
     setting: { backgroundColor: "#3B3939", color: "white" },
   });
   const [upComingReservation, setUpComingReservation] = useState([]);
+  const [movingLinesArrayPoint, setMovingLinesArrayPoint] = useState(false);
 
   return (
     <div>
@@ -67,6 +69,8 @@ const Draw = () => {
         setMousePosition={setMousePosition}
         resizingObject={resizingObject}
         setResizingObject={setResizingObject}
+        movingLinesArrayPoint={movingLinesArrayPoint}
+        setMovingLinesArrayPoint={setMovingLinesArrayPoint}
       />
       <Instructions active={activeNav} />
       <BottomBar />
@@ -89,6 +93,11 @@ const Draw = () => {
         elementsArray={elementsArray}
         upComingReservations={upComingReservation}
         setElementsArray={setElementsArray}
+      />
+      <InfoBoxLines
+        activeNav={activeNav}
+        linesArray={linesArray}
+        movingLinesArrayPoint={movingLinesArrayPoint}
       />
     </div>
   );
@@ -115,6 +124,8 @@ const CanvasComponent = ({
   setMousePosition,
   resizingObject,
   setResizingObject,
+  movingLinesArrayPoint,
+  setMovingLinesArrayPoint,
 }) => {
   const activeDotImage = new Image();
   const inActiveDotImage = new Image();
@@ -132,7 +143,6 @@ const CanvasComponent = ({
   const [cursorStyle, setCursorStyle] = useState("grab");
 
   const [movingObject, setMovingObject] = useState(false);
-  const [movingLinesArrayPoint, setMovingLinesArrayPoint] = useState(false);
 
   const genrateId = (ary) => {
     const randomNum = Math.floor(Math.random() * 1000000);
@@ -283,7 +293,6 @@ const CanvasComponent = ({
           hoverImage.height,
         );
       }
-
       for (let i = 0; i < elementsArray.length; i++) {
         if (
           isNearObject(mousePosition, elementsArray[i], 20) ||
@@ -437,15 +446,14 @@ const CanvasComponent = ({
             if (isMouseDown) {
               setMovingLinesArrayPoint({ i: i, j: j });
               setPanning(false);
-            } else {
-              context.drawImage(
-                activeDotImage,
-                linesArray[i][j].x + offset.x - 7,
-                linesArray[i][j].y + offset.y - 7,
-                14,
-                14,
-              );
             }
+            context.drawImage(
+              activeDotImage,
+              linesArray[i][j].x + offset.x - 7,
+              linesArray[i][j].y + offset.y - 7,
+              14,
+              14,
+            );
           }
         }
       }
@@ -535,16 +543,6 @@ const CanvasComponent = ({
         14,
       );
     }
-    if (active === "edit") {
-      if (keyPress.value === "Backspace") {
-        // if (activeElement !== false) {
-        //   setKeyPress({ value: false });
-        //   elementsArray.splice(activeElement, 1);
-        //   setActiveElement(false);
-        // }
-        // delete later
-      }
-    }
     if (keyPress.value !== false) {
       setKeyPress({ value: false });
     }
@@ -594,7 +592,6 @@ const CanvasComponent = ({
       elementsArray[activeElement].y =
         e.clientY - offset.y - elementsArray[activeElement].height / 2;
     }
-
     // NEVER TOUCH THIS RESIZING CODE PLZ also fix the negative heigh | width problem | somewhat fixed those issues
     if (resizingObject !== false && isMouseDown && active == "edit") {
       if (elementsArray[resizingObject].reSize === "n") {
@@ -727,7 +724,7 @@ const CanvasComponent = ({
     if (active === "draw") {
       setLastClick({
         x: mousePosition.x - offset.x,
-        y: mousePosition.y  - offset.y,
+        y: mousePosition.y - offset.y,
       });
       linesArray[linesArray.length - 1].push({
         x: mousePosition.x - offset.x,
