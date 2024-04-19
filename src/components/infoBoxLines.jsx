@@ -14,7 +14,11 @@ const InfoBoxLines = ({ movingLinesArrayPoint, activeNav, linesArray }) => {
     }
   }, [movingLinesArrayPoint, activeNav]);
 
-  useEffect(() => {}, [movingLinesArrayPoint]);
+  useEffect(() => {
+    if (movingLinesArrayPoint !== false) {
+      setLastInfo(linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j]);
+    }
+  }, [movingLinesArrayPoint]);
 
   const onDeleteClick = () => {
     if (movingLinesArrayPoint !== false) {

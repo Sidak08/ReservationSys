@@ -447,6 +447,7 @@ const CanvasComponent = ({
               setMovingLinesArrayPoint({ i: i, j: j });
               setPanning(false);
             }
+            //changeTheImage
             context.drawImage(
               activeDotImage,
               linesArray[i][j].x + offset.x - 7,
@@ -456,6 +457,19 @@ const CanvasComponent = ({
             );
           }
         }
+      }
+      if (movingLinesArrayPoint !== false) {
+        context.drawImage(
+          activeDotImage,
+          linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j].x +
+            offset.x -
+            7,
+          linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j].y +
+            offset.y -
+            7,
+          14,
+          14,
+        );
       }
     }
     if (active === "draw") {
@@ -660,7 +674,7 @@ const CanvasComponent = ({
       // elementsArray[resizingObject].height =
       //   e.clientY - elementsArray[resizingObject].y - offset.y;
     }
-    if (movingLinesArrayPoint !== false) {
+    if (movingLinesArrayPoint !== false && isMouseDown && active == "edit") {
       //moving an dot
       linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j].x =
         e.clientX - offset.x;
@@ -747,7 +761,6 @@ const CanvasComponent = ({
         });
         setSelectedElement(false);
       }
-
       for (let i = 0; i < elementsArray.length; i++) {
         if (
           clientX >= elementsArray[i].x + offset.x &&
@@ -762,7 +775,6 @@ const CanvasComponent = ({
           elementsArray[i].selected = false;
         }
       }
-
       for (let i = 0; i < elementsArray.length; i++) {
         if (elementsArray[i].reSize !== false) {
           setResizingObject(i);
@@ -770,7 +782,6 @@ const CanvasComponent = ({
           setMovingObject(false);
         }
       }
-
       const reset = (elementsArray) => {
         for (let i = 0; i < elementsArray.length; i++) {
           if (elementsArray[i].selected === true) return;
@@ -778,8 +789,8 @@ const CanvasComponent = ({
         setActiveElement(false);
         return;
       };
-
       reset(elementsArray);
+      setMovingLinesArrayPoint(false);
     }
   };
   const handleMouseUp = () => {
@@ -787,7 +798,6 @@ const CanvasComponent = ({
     setIsMouseDown(false);
     setResizingObject(false);
     setMovingObject(false);
-    setMovingLinesArrayPoint(false);
   };
   const isNearPoint = (mousePosition, point, radius) => {
     const canvasMouseX = mousePosition.x;
