@@ -30,8 +30,16 @@ const InfoBoxLines = ({ movingLinesArrayPoint, activeNav, linesArray }) => {
 
   return (
     <div className={`infoBoxLinesDiv ${animationActive ? "animate" : ""}`}>
-      <h1>{lastInfo.x}</h1>
-      <h1>{lastInfo.y}</h1>
+      <div id="infoBoxLinesFlex">
+        <h3> Point </h3>
+        <div>
+          <h4>X: {Math.round(lastInfo.x)}</h4>
+          <h4>Y: {Math.round(lastInfo.y)}</h4>
+        </div>
+      </div>
+      <button onClick={onDeleteClick} id="infoBoxLinesDelete">
+        Delete
+      </button>
     </div>
   );
 };
