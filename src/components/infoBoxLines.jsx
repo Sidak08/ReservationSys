@@ -1,7 +1,12 @@
 import "./infoboxLines.css";
 import { useEffect, useState } from "react";
 
-const InfoBoxLines = ({ movingLinesArrayPoint, activeNav, linesArray }) => {
+const InfoBoxLines = ({
+  movingLinesArrayPoint,
+  setMovingLinesArrayPoint,
+  activeNav,
+  linesArray,
+}) => {
   const [animationActive, setAnimationActive] = useState(false);
   const [lastInfo, setLastInfo] = useState({ x: 0, y: 0 });
 
@@ -22,9 +27,9 @@ const InfoBoxLines = ({ movingLinesArrayPoint, activeNav, linesArray }) => {
   const onDeleteClick = () => {
     if (movingLinesArrayPoint !== false) {
       console.log(movingLinesArrayPoint);
-      const dot =
-        linesArray[movingLinesArrayPoint.i][movingLinesArrayPoint.j]
-          .reservation;
+      console.log(linesArray);
+      linesArray[movingLinesArrayPoint.i].splice(movingLinesArrayPoint.j, 1);
+      setMovingLinesArrayPoint(false);
     }
   };
 

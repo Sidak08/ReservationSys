@@ -98,6 +98,7 @@ const Draw = () => {
         activeNav={activeNav}
         linesArray={linesArray}
         movingLinesArrayPoint={movingLinesArrayPoint}
+        setMovingLinesArrayPoint={setMovingLinesArrayPoint}
       />
     </div>
   );
@@ -237,7 +238,9 @@ const CanvasComponent = ({
       }
     }
     if (active === "edit") {
-      setCursorStyle("grab");
+      if (cursorStyle !== "grab") {
+        setCursorStyle("grab");
+      }
       if (selectedElement != false) {
         const infoChart = {
           roundTable: { height: 50, width: 50 },
@@ -579,6 +582,8 @@ const CanvasComponent = ({
     keyPress,
     initialization,
     elementsArray,
+    linesArray,
+    movingLinesArrayPoint,
   ]);
 
   useEffect(() => {
