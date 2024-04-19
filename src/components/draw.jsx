@@ -473,7 +473,9 @@ const CanvasComponent = ({
       }
     }
     if (active === "draw") {
-      setCursorStyle("default");
+      if (cursorStyle !== "default") {
+        setCursorStyle("default");
+      }
 
       if (keyPress.value === "Escape") {
         setActive("home");
@@ -539,10 +541,16 @@ const CanvasComponent = ({
                 linesArray[i][j].x !== false &&
                 isNearPoint(mousePosition, linesArray[i][j], 10)
               ) {
-                setMousePosition({
-                  x: linesArray[i][j].x + offset.x,
-                  y: linesArray[i][j].y + offset.y,
-                });
+                if (
+                  mousePosition.x !== linesArray[i][j].x + offset.x &&
+                  mousePosition.y !== linesArray[i][j].y + offset.y
+                ) {
+                  setMousePosition({
+                    x: linesArray[i][j].x + offset.x,
+                    y: linesArray[i][j].y + offset.y,
+                  });
+                }
+                context.strokeStyle = "red";
               }
             }
           }
