@@ -152,6 +152,8 @@ const HomeReserve = ({
           activeRsvp={activeRsvp}
           setActiveRsvp={setActiveRsvp}
           activeNav={activeNav}
+          upComingReservations={upComingReservations}
+          elementsArray={elementsArray}
         />
       </>
     );
@@ -218,7 +220,8 @@ const StatusDiv = ({ info, activeRsvp, setActiveRsvp, id }) => {
             email: reservationItem.email,
             phone: reservationItem.phone,
             notes: reservationItem.notes,
-            id: id,
+            id: reservationItem.id,
+            tableId: id,
           }}
           activeRsvp={activeRsvp}
           setActiveRsvp={setActiveRsvp}
@@ -238,7 +241,7 @@ const TimeSlotDiv = ({ info, activeRsvp, setActiveRsvp }) => {
       activeRsvp.startDate === info.startDate &&
       activeRsvp.endDate === info.endDate &&
       activeRsvp.people === info.people &&
-      activeRsvp.id === info.id &&
+      activeRsvp.tableId === info.tableId &&
       activeRsvp.name === info.name &&
       activeRsvp.email === info.email &&
       activeRsvp.phone === info.phone &&
@@ -305,7 +308,8 @@ const UpcomingReservations = ({
               email: reservationItem.email,
               phone: reservationItem.phone,
               notes: reservationItem.notes,
-              id: reservationItem.tableId,
+              tableId: reservationItem.tableId,
+              id: reservationItem.id,
             }}
             activeRsvp={activeRsvp}
             setActiveRsvp={setActiveRsvp}

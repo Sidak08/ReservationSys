@@ -2,7 +2,13 @@ import "./homeReserveBookShowInfo.css";
 import { useState, useEffect } from "react";
 import { CloseSvg } from "./svg.jsx";
 
-const BookShowInfo = ({ activeRsvp, setActiveRsvp, activeNav }) => {
+const BookShowInfo = ({
+  activeRsvp,
+  setActiveRsvp,
+  activeNav,
+  upComingReservations,
+  elementsArray,
+}) => {
   const [animation, setAnimation] = useState(false);
   const [lastActiveRsvp, setLastActiveRsvp] = useState({
     startDate: "",
@@ -29,6 +35,25 @@ const BookShowInfo = ({ activeRsvp, setActiveRsvp, activeNav }) => {
       setLastActiveRsvp(activeRsvp);
     }
   }, [activeRsvp]);
+
+  const onDelete = () => {
+    for (let i = 0; i < upComingReservations.length; i++) {
+      if (upComingReservations[i].id === activeRsvp.id) {
+        upComingReservations.splice(i, 1);
+      }
+    }
+    for (let i = 0; i < elementsArray.length; i++) {
+      if (elementsArray[i].id === activeRsvp.tableId) {
+        for (let j = 0; j < elementsArray[i].reservation.length; j++) {
+          if (elementsArray[i].reservation[j].id === activeRsvp.id) {
+            elementsArray[i].reservation.splice(j, 1);
+          }
+        }
+      }
+    }
+    console.log(activeRsvp);
+    setActiveRsvp(false);
+  };
 
   return (
     <div className={`bookShowInfo ${animation ? "animate" : ""}`}>
@@ -60,7 +85,7 @@ const BookShowInfo = ({ activeRsvp, setActiveRsvp, activeNav }) => {
       </div>
       <div className="bookShowInfoBtnDiv">
         <button>Change</button>
-        <button>Delete</button>
+        <button onClick={onDelete}>Delete</button>
       </div>
     </div>
   );
