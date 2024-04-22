@@ -1,0 +1,146 @@
+.homeReserveBookInfo {
+    min-height: 350px;
+    width: 360px;
+    position: absolute;
+    border-radius: 10px;
+    background: rgba(27, 26, 26, 0.83);
+    backdrop-filter: blur(5.9px);
+    -webkit-backdrop-filter: blur(5.9px);
+    border: 1px solid rgba(27, 26, 26, 0.88);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    transform: translateY(-390px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: -900px;
+    right: 400px;
+}
+.homeReserveBookInfo.animate {
+    top: calc((8% - 35px) / 2);
+    right: 400px;
+    opacity: 1;
+    transform: translateX(0);
+}
+.redBorder {
+    transition: all 0.2s ease-in-out;
+    border: 1px solid red;
+}
+.BookInfoClose {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    background-color: red;
+    border: 10px solid #0d0d0d;
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+#homeReserveBookInfoHeader {
+    width: 100%;
+    display: flex;
+    color: white;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+#homeReserveBookInfoHeader > h2 {
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 32px;
+    font-weight: 400;
+}
+#homeReserveBookInfoHeader > div {
+    display: flex;
+    width: 50%;
+    justify-content: space-evenly;
+    align-items: end;
+    margin-right: 35px;
+    font-size: 18px;
+}
+#homeReserveBookInfoHeaderLine {
+    height: 5px;
+    width: 90%;
+    background-color: white;
+}
+.homeReserveInputBoxOutterDiv {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-direction: row;
+    margin-top: 10px;
+}
+.homeReserveInputBoxOutterDiv > div {
+    max-width: 310px;
+}
+.homeReserveInputBox {
+    height: 30px;
+    width: 310px;
+    background-color: #313131;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.homeReserveAddButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    background-color: #313131;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 50%;
+    font-size: 30px;
+    font-weight: 200;
+    padding-bottom: 3px;
+    margin-right: 5px;
+}
+.homeReserveBookingInfoThinLine {
+    width: 90%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    margin-left: 20px;
+}
+.homeReserveInputBoxRealOutterDiv > h4 {
+    color: white;
+    font-size: 17px;
+    margin: 10px 0px 5px 0px;
+    font-weight: 300;
+}
+input {
+    color: white;
+    padding-left: 5px;
+}
+input:focus {
+    border: none;
+    outline: none;
+}
+#homeReserveBookInfoPeopleInput {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 75%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    color: white;
+}
+#homeReserveBookInfoPeopleInput > h4 {
+    font-weight: 300;
+}
+#homeReserveBookInfoPeopleInput > input {
+    width: 50px;
+    height: 30px;
+    background-color: #313131;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}

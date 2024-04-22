@@ -2,7 +2,6 @@ import "./homeReserveBookInfo.css";
 import { useState, useEffect } from "react";
 import { CloseSvg } from "./svg.jsx";
 const BookInfo = ({
-  info,
   renderBookInfo,
   activeNav,
   setBorderRed,
@@ -18,8 +17,17 @@ const BookInfo = ({
   setNumPhone,
   numNotes,
   setNumNotes,
+  setInfo,
+  info,
 }) => {
   const [animate, setAnimate] = useState(false);
+  // const [info, setInfo] = useState({
+  //   name: [],
+  //   phone: [],
+  //   email: [],
+  //   notes: [],
+  //   people: 1,
+  // });
 
   useEffect(() => {
     if (renderBookInfo && activeNav === "home") {
@@ -39,18 +47,78 @@ const BookInfo = ({
   }, [borderRed]);
 
   const handleNumPeopleChange = (e) => {
-    const input = e.target.value;
-    info.people = parseInt(input);
+    info.people = e.target.value;
+    setInfo(info);
   };
+
+  const handleClose = () => {
+    setRenderBookInfo(false);
+    let tmp = {
+      name: [],
+      phone: [],
+      email: [],
+      notes: [],
+      people: 1,
+    };
+    for (let i = 0; i < info.name.length; i++) {
+      tmp.name.push("");
+    }
+    for (let i = 0; i < info.phone.length; i++) {
+      tmp.phone.push("");
+    }
+    for (let i = 0; i < info.email.length; i++) {
+      tmp.email.push("");
+    }
+    for (let i = 0; i < info.notes.length; i++) {
+      tmp.notes.push("");
+    }
+    setInfo(tmp);
+    setInfo({
+      name: [],
+      phone: [],
+      email: [],
+      notes: [],
+      people: 1,
+    });
+  };
+
+  useEffect(() => {
+    if (renderBookInfo === false) {
+      let tmp = {
+        name: [],
+        phone: [],
+        email: [],
+        notes: [],
+        people: 1,
+      };
+      for (let i = 0; i < info.name.length; i++) {
+        tmp.name[i] = "";
+      }
+      for (let i = 0; i < info.phone.length; i++) {
+        tmp.phone.push("");
+      }
+      for (let i = 0; i < info.email.length; i++) {
+        tmp.email.push("");
+      }
+      for (let i = 0; i < info.notes.length; i++) {
+        tmp.notes.push("");
+      }
+      setInfo(tmp);
+      setInfo({
+        name: [],
+        phone: [],
+        email: [],
+        notes: [],
+        people: 1,
+      });
+    }
+  }, [renderBookInfo]);
 
   return (
     <div
       className={`homeReserveBookInfo ${animate ? "animate" : ""} ${borderRed ? "redBorder" : ""}`}
     >
-      <button
-        onClick={() => setRenderBookInfo(false)}
-        className="BookInfoClose"
-      >
+      <button onClick={handleClose} className="BookInfoClose">
         <CloseSvg />
       </button>
       <div id="homeReserveBookInfoHeader">
@@ -65,42 +133,54 @@ const BookInfo = ({
         count={numName}
         info={info}
         heading="Name"
+        setInfo={setInfo}
       />
       <BookInfoInputBox
         addCounter={setNumEmail}
         count={numEmail}
         info={info}
         heading="Email"
+        setInfo={setInfo}
       />
       <BookInfoInputBox
         addCounter={setNumPhone}
         count={numPhone}
         info={info}
         heading="Phone"
+        setInfo={setInfo}
       />
       <BookInfoInputBox
         addCounter={setNumNotes}
         count={numNotes}
         info={info}
         heading="Notes"
+        setInfo={setInfo}
       />
       <div id="homeReserveBookInfoPeopleInput">
         <h4> Number Of People </h4>
-        <input onChange={handleNumPeopleChange} />
+        <input value={info.people} onChange={handleNumPeopleChange} />
       </div>
     </div>
   );
 };
 
-const BookInfoInputBox = ({ addCounter, count, info, heading }) => {
-  const handleChange = (e, key) => {
+const BookInfoInputBox = ({ addCounter, count, info, heading, setInfo }) => {
+  const handleChange = (e, index) => {
     const input = e.target.value;
-    info[heading.toLowerCase()][key] = input;
+    const updatedInfo = { ...info };
+    updatedInfo[heading.toLowerCase()] = [
+      ...updatedInfo[heading.toLowerCase()],
+    ];
+    updatedInfo[heading.toLowerCase()][index] = input;
+    setInfo(updatedInfo);
+    console.log(info[heading.toLowerCase()][index]);
   };
+
   const inputs = Array.from({ length: count }, (_, index) => (
     <input
       key={index}
       className="homeReserveInputBox"
+      value={info[heading.toLowerCase()][index]}
       onChange={(e) => {
         handleChange(e, index);
       }}

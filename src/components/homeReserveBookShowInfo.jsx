@@ -8,6 +8,8 @@ const BookShowInfo = ({
   activeNav,
   upComingReservations,
   elementsArray,
+  changeRsvp,
+  setChangeRsvp,
 }) => {
   const [animation, setAnimation] = useState(false);
   const [lastActiveRsvp, setLastActiveRsvp] = useState({
@@ -51,7 +53,11 @@ const BookShowInfo = ({
         }
       }
     }
-    console.log(activeRsvp);
+    setActiveRsvp(false);
+  };
+
+  const changeRsvpFunc = () => {
+    setChangeRsvp(activeRsvp);
     setActiveRsvp(false);
   };
 
@@ -84,7 +90,7 @@ const BookShowInfo = ({
         </div>
       </div>
       <div className="bookShowInfoBtnDiv">
-        <button>Change</button>
+        <button onClick={changeRsvpFunc}>Change</button>
         <button onClick={onDelete}>Delete</button>
       </div>
     </div>
