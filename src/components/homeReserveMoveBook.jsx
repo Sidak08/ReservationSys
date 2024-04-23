@@ -15,7 +15,6 @@ const ChangeBookInfo = ({
     phone: [],
     email: [],
     notes: [],
-    people: 1,
     id: 0,
     people: 1,
   });

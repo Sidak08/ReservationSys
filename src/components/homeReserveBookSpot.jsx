@@ -195,7 +195,6 @@ const BookSpot = ({
   };
 
   const handleSubmit = () => {
-    console.log(bookingInfo);
     setForceRerender(forceRerender + 1);
     const { endTime, endDate } = calculateEndTime(
       bookTime,
@@ -262,33 +261,6 @@ const BookSpot = ({
         people: people,
         tableId: elementsArray[activeElement].id,
         id: id,
-      });
-      let tmp = {
-        name: [],
-        phone: [],
-        email: [],
-        notes: [],
-        people: 1,
-      };
-      for (let i = 0; i < bookingInfo.name.length; i++) {
-        tmp.name.push("");
-      }
-      for (let i = 0; i < bookingInfo.phone.length; i++) {
-        tmp.phone.push("");
-      }
-      for (let i = 0; i < bookingInfo.email.length; i++) {
-        tmp.email.push("");
-      }
-      for (let i = 0; i < bookingInfo.notes.length; i++) {
-        tmp.notes.push("");
-      }
-      setBookingInfo(tmp);
-      setBookingInfo({
-        name: [],
-        phone: [],
-        email: [],
-        notes: [],
-        people: 1,
       });
       setSpotAvailble(false);
     }

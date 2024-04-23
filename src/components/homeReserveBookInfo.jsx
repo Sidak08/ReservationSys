@@ -21,14 +21,6 @@ const BookInfo = ({
   info,
 }) => {
   const [animate, setAnimate] = useState(false);
-  // const [info, setInfo] = useState({
-  //   name: [],
-  //   phone: [],
-  //   email: [],
-  //   notes: [],
-  //   people: 1,
-  // });
-
   useEffect(() => {
     if (renderBookInfo && activeNav === "home") {
       setAnimate(true);
@@ -53,38 +45,12 @@ const BookInfo = ({
 
   const handleClose = () => {
     setRenderBookInfo(false);
-    let tmp = {
-      name: [],
-      phone: [],
-      email: [],
-      notes: [],
-      people: 1,
-    };
-    for (let i = 0; i < info.name.length; i++) {
-      tmp.name.push("");
-    }
-    for (let i = 0; i < info.phone.length; i++) {
-      tmp.phone.push("");
-    }
-    for (let i = 0; i < info.email.length; i++) {
-      tmp.email.push("");
-    }
-    for (let i = 0; i < info.notes.length; i++) {
-      tmp.notes.push("");
-    }
-    setInfo(tmp);
-    setInfo({
-      name: [],
-      phone: [],
-      email: [],
-      notes: [],
-      people: 1,
-    });
   };
 
   useEffect(() => {
     if (renderBookInfo === false) {
-      let tmp = {
+      console.log("resetting");
+      const tmp = {
         name: [],
         phone: [],
         email: [],
@@ -95,24 +61,46 @@ const BookInfo = ({
         tmp.name[i] = "";
       }
       for (let i = 0; i < info.phone.length; i++) {
-        tmp.phone.push("");
+        tmp.phone[i] = "";
       }
       for (let i = 0; i < info.email.length; i++) {
-        tmp.email.push("");
+        tmp.email[i] = "";
       }
       for (let i = 0; i < info.notes.length; i++) {
-        tmp.notes.push("");
+        tmp.notes[i] = "";
       }
       setInfo(tmp);
-      setInfo({
-        name: [],
-        phone: [],
-        email: [],
-        notes: [],
-        people: 1,
-      });
     }
   }, [renderBookInfo]);
+
+  useEffect(() => {
+    const isEmpty = (arr) => {
+      if (arr.length === 0) {
+        return false;
+      }
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== "") {
+          return false;
+        }
+      }
+      return true;
+    };
+    const tmp = {
+      name: [],
+      phone: [],
+      email: [],
+      notes: [],
+      people: 1,
+    };
+    if (
+      isEmpty(info.name) ||
+      isEmpty(info.email) ||
+      isEmpty(info.phone) ||
+      isEmpty(info.notes)
+    ) {
+      setInfo(tmp);
+    }
+  }, [info]);
 
   return (
     <div
