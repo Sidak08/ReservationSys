@@ -9,7 +9,7 @@ const ChangeBookInfo = ({
   upComingReservations,
 }) => {
   const [animate, setAnimate] = useState(false);
-  const [infoId, setInfoId] = useState(0);
+  // const [infoId, setInfoId] = useState(0);
   const [info, setInfo] = useState({
     name: [],
     phone: [],
@@ -47,24 +47,70 @@ const ChangeBookInfo = ({
     }
   }, [info]);
 
-  const [numPeople, setNumPeople] = useState(1);
-
   const handleNumPeopleChange = (e) => {
     const input = e.target.value;
-    info.people = parseInt(input);
-    setNumPeople(input);
+    info.people = input;
+    setInfo(info);
   };
 
   const handleClose = () => {
-    setInfo({
+    setChangeRsvp(false);
+  };
+
+  useEffect(() => {
+    if (changeRsvp === false) {
+      console.log("resetting");
+      const tmp = {
+        name: [],
+        phone: [],
+        email: [],
+        notes: [],
+        people: 1,
+      };
+      for (let i = 0; i < info.name.length; i++) {
+        tmp.name[i] = "";
+      }
+      for (let i = 0; i < info.phone.length; i++) {
+        tmp.phone[i] = "";
+      }
+      for (let i = 0; i < info.email.length; i++) {
+        tmp.email[i] = "";
+      }
+      for (let i = 0; i < info.notes.length; i++) {
+        tmp.notes[i] = "";
+      }
+      setInfo(tmp);
+    }
+  }, [changeRsvp]);
+
+  useEffect(() => {
+    const isEmpty = (arr) => {
+      if (arr.length === 0) {
+        return false;
+      }
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== "") {
+          return false;
+        }
+      }
+      return true;
+    };
+    const tmp = {
       name: [],
       phone: [],
       email: [],
       notes: [],
       people: 1,
-    });
-    setChangeRsvp(false);
-  };
+    };
+    if (
+      isEmpty(info.name) ||
+      isEmpty(info.email) ||
+      isEmpty(info.phone) ||
+      isEmpty(info.notes)
+    ) {
+      setInfo(tmp);
+    }
+  }, [info]);
 
   return (
     <div className={`homeReserveBookInfo ${animate ? "animate" : ""}`}>
@@ -78,20 +124,20 @@ const ChangeBookInfo = ({
         </div>
       </div>
       <div id="homeReserveBookInfoHeaderLine" />
-      <BookInfoInputBox info={info} heading="Name" />
-      <BookInfoInputBox info={info} heading="Email" />
-      <BookInfoInputBox info={info} heading="Phone" />
-      <BookInfoInputBox info={info} heading="Notes" />
+      <BookInfoInputBox info={info} heading="Name" setInfo={setInfo} />
+      <BookInfoInputBox info={info} heading="Email" setInfo={setInfo} />
+      <BookInfoInputBox info={info} heading="Phone" setInfo={setInfo} />
+      <BookInfoInputBox info={info} heading="Notes" setInfo={setInfo} />
       <div id="homeReserveBookInfoPeopleInput">
         <h4> Number Of People </h4>
-        <input onChange={handleNumPeopleChange} value={numPeople} />
+        <input onChange={handleNumPeopleChange} value={info.people} />
       </div>
       <h1> change time</h1>
     </div>
   );
 };
 
-const BookInfoInputBox = ({ info, heading }) => {
+const BookInfoInputBox = ({ info, heading, setInfo }) => {
   const [rsvpId, setRsvpId] = useState(0);
   const [num, setNum] = useState(
     info[heading.toLowerCase()].length === 0
@@ -110,14 +156,22 @@ const BookInfoInputBox = ({ info, heading }) => {
     }
   }, [info]);
 
-  const handleChange = (e, key) => {
+  const handleChange = (e, index) => {
     const input = e.target.value;
-    info[heading.toLowerCase()][key] = input;
+    const updatedInfo = { ...info };
+    updatedInfo[heading.toLowerCase()] = [
+      ...updatedInfo[heading.toLowerCase()],
+    ];
+    updatedInfo[heading.toLowerCase()][index] = input;
+    setInfo(updatedInfo);
+    console.log(info[heading.toLowerCase()][index]);
   };
+
   const addElement = () => {
-    info[heading.toLowerCase()].push("");
+    info[heading.toLowerCase()].push(" ");
     setNum(num + 1);
   };
+
   const inputs = Array.from(
     {
       length: num,
