@@ -7,6 +7,7 @@ const ChangeBookInfo = ({
   setChangeRsvp,
   elementsArray,
   upComingReservations,
+  setRenderChangeTime,
 }) => {
   const [animate, setAnimate] = useState(false);
   // const [infoId, setInfoId] = useState(0);
@@ -57,9 +58,13 @@ const ChangeBookInfo = ({
     setChangeRsvp(false);
   };
 
+  const handleChangeTime = () => {
+    setRenderChangeTime(changeRsvp);
+    setChangeRsvp(false);
+  };
+
   useEffect(() => {
     if (changeRsvp === false) {
-      console.log("resetting");
       const tmp = {
         name: [],
         phone: [],
@@ -129,10 +134,12 @@ const ChangeBookInfo = ({
       <BookInfoInputBox info={info} heading="Phone" setInfo={setInfo} />
       <BookInfoInputBox info={info} heading="Notes" setInfo={setInfo} />
       <div id="homeReserveBookInfoPeopleInput">
+        <button className="homeReserveChangeTimeBtn" onClick={handleChangeTime}>
+          Change Time
+        </button>
         <h4> Number Of People </h4>
         <input onChange={handleNumPeopleChange} value={info.people} />
       </div>
-      <h1> change time</h1>
     </div>
   );
 };
@@ -164,7 +171,6 @@ const BookInfoInputBox = ({ info, heading, setInfo }) => {
     ];
     updatedInfo[heading.toLowerCase()][index] = input;
     setInfo(updatedInfo);
-    console.log(info[heading.toLowerCase()][index]);
   };
 
   const addElement = () => {

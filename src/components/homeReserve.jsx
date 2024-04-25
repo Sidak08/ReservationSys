@@ -4,6 +4,7 @@ import BookInfo from "./homeReserveBookInfo";
 import BookSpot from "./homeReserveBookSpot";
 import BookShowInfo from "./homeReserveBookShowInfo";
 import ChangeBookInfo from "./homeReserveMoveBook";
+import ChangeTime from "./homeReserveMoveTime";
 
 // ON DELETE RMOVE THE UPCOMING RESERVATIONS
 
@@ -47,6 +48,8 @@ const HomeReserve = ({
 
   const [activeRsvp, setActiveRsvp] = useState(false);
   const [changeRsvp, setChangeRsvp] = useState(false);
+
+  const [renderChangeTime, setRenderChangeTime] = useState(false);
   useEffect(() => {
     if (
       activeElement !== false &&
@@ -166,6 +169,14 @@ const HomeReserve = ({
           setChangeRsvp={setChangeRsvp}
           elementsArray={elementsArray}
           upComingReservations={upComingReservations}
+          setRenderChangeTime={setRenderChangeTime}
+        />
+        <ChangeTime
+          activeNav={activeNav}
+          elementsArray={elementsArray}
+          upComingReservations={upComingReservations}
+          renderChangeTime={renderChangeTime}
+          setRenderChangeTime={setRenderChangeTime}
         />
       </>
     );
@@ -217,6 +228,14 @@ const HomeReserve = ({
           setChangeRsvp={setChangeRsvp}
           elementsArray={elementsArray}
           upComingReservations={upComingReservations}
+          setRenderChangeTime={setRenderChangeTime}
+        />
+        <ChangeTime
+          activeNav={activeNav}
+          elementsArray={elementsArray}
+          upComingReservations={upComingReservations}
+          renderChangeTime={renderChangeTime}
+          setRenderChangeTime={setRenderChangeTime}
         />
       </>
     );

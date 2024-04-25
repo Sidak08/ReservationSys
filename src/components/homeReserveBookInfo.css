@@ -123,7 +123,7 @@ input:focus {
     border: none;
     outline: none;
 }
-#homeReserveBookInfoPeopleInput {
+#homeReserveBookInfoPeopleInput1 {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 75%;
@@ -133,10 +133,10 @@ input:focus {
     align-items: center;
     color: white;
 }
-#homeReserveBookInfoPeopleInput > h4 {
+#homeReserveBookInfoPeopleInput1 > h4 {
     font-weight: 300;
 }
-#homeReserveBookInfoPeopleInput > input {
+#homeReserveBookInfoPeopleInput1 > input {
     width: 50px;
     height: 30px;
     background-color: #313131;
