@@ -13,6 +13,7 @@ const HomeReserve = ({
   activeNav,
   elementsArray,
   upComingReservations,
+  setUpComingReservations,
   setElementsArray,
 }) => {
   const [animationActive, setAnimationActive] = useState(false);
@@ -177,6 +178,8 @@ const HomeReserve = ({
           upComingReservations={upComingReservations}
           renderChangeTime={renderChangeTime}
           setRenderChangeTime={setRenderChangeTime}
+          setElementsArray={setElementsArray}
+          setUpComingReservations={setUpComingReservations}
         />
       </>
     );
@@ -236,6 +239,8 @@ const HomeReserve = ({
           upComingReservations={upComingReservations}
           renderChangeTime={renderChangeTime}
           setRenderChangeTime={setRenderChangeTime}
+          setElementsArray={setElementsArray}
+          setUpComingReservations={setUpComingReservations}
         />
       </>
     );

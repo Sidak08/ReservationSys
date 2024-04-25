@@ -93,6 +93,7 @@ const Draw = () => {
         elementsArray={elementsArray}
         upComingReservations={upComingReservation}
         setElementsArray={setElementsArray}
+        setUpComingReservations={setUpComingReservation}
       />
       <InfoBoxLines
         activeNav={activeNav}

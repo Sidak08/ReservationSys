@@ -49,7 +49,6 @@ const BookInfo = ({
 
   useEffect(() => {
     if (renderBookInfo === false) {
-      console.log("resetting");
       const tmp = {
         name: [],
         phone: [],
@@ -161,7 +160,6 @@ const BookInfoInputBox = ({ addCounter, count, info, heading, setInfo }) => {
     ];
     updatedInfo[heading.toLowerCase()][index] = input;
     setInfo(updatedInfo);
-    console.log(info[heading.toLowerCase()][index]);
   };
 
   const inputs = Array.from({ length: count }, (_, index) => (
